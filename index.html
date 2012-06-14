@@ -1076,7 +1076,33 @@ git config --global alias.br branch
 						<p>
 							<i><small>- <a href="http://www.jukie.net/bart/blog/pimping-out-git-log/">Pimping out git log</a></small></i>
 						</p>
-					</p>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Bash completion</h2>
+						<ul>
+							<li>Tab completion for git commands, branches, SHA-1 hashes&hellip;</li>
+							<li>Usually installed with the git packages of your OS</li>
+						</ul>
+						<p><pre><code># Add to your ~/.bashrc
+if [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+fi</code></pre>
+						</p>
+						<p>
+							<i><small>- <a href="http://git-scm.com/book/en/Git-Basics-Tips-and-Tricks#Auto-Completion">Auto-Completion</a></small></i>
+						</p>
+					</section>
+					<section>
+						<h2>Bash prompt</h2>
+						<p>Show some information about the current git branch in your shell prompt</p>
+						<p>
+							<pre><code>PS1='\[\033[01;32m\]\u@\h\[\033[01;34m\] \w\[\033[31m\]$(__git_ps1 " (%s)") \[\033[01;34m\]$\[\033[00m\] '</code></pre>
+							<img src="images/bash-prompt.png" alt="Bash prompt demo">
+						</p>
+						<p class="fragment">Fancy prompt magic: <a href="http://volnitsky.com/project/git-prompt/">GIT Prompt</a></p>
 					</section>
 				</section>
 
