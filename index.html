@@ -1,681 +1,752 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8">
-		
-		<title>Introducing Git</title>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Introducing Git</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+</head>
+<body style="opacity: 0">
 
-		<meta name="description" content="An introduction to Git for aspiring developers.">
-		<meta name="author" content="Jochen Schalanda">
-		
-		<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-		
-		<link rel="stylesheet" href="reveal.js/css/reset.css">
-		<link rel="stylesheet" href="reveal.js/css/main.css">
+<slides class="layout-widescreen">
 
-		<link rel="stylesheet" href="reveal.js/lib/zenburn.css">
-		<link rel="stylesheet" href="style.css">
-	</head>
-	
-	<body>
-		<div id="reveal">
-			
-			<!-- Any section element inside of this container is displayed as a slide -->
-			<div class="slides">
-				<section>
-					<h1>Introducing Git</h1>
-					<h3 class="inverted">A quick introduction to Git for aspiring developers</h3>
-					<script>
-						// Delicously hacky. Look away.
-						if( navigator.userAgent.match( /(iPhone|iPad|iPod|Android)/i ) )
-						document.write( '<p style="color: rgba(0,0,0,0.3); text-shadow: none;">('+'Tap to navigate'+')</p>' );
-					</script>
-				</section>
-				
-				<section>
-					<section>
-						<h2>Heads Up</h2>
-						<blockquote>
-							Git is distributed version control system focused on speed, effectivity and real-world usability on large projects.
-						</blockquote>
-						<p>
-							<i><small>- <a href="http://git-scm.com/about">About Git</a></small></i>
-						</p>
-					</section>
-					<section>
-						<h2>Version Control</h2>
-						<p><a href="images/vcs-1.png"><img src="images/vcs-1-tn.png" alt="Local version control"></a></p>
-						<p>Example: RCS</p>
-						<p><i><small>- <a href="http://progit.org/book/ch1-1.html">Pro Git 1.1 Getting Started About Version Control</a></small></i></p>
-					</section>
-					<section>
-						<h2>Version Control</h2>
-						<p><a href="images/vcs-2.png"><img src="images/vcs-2-tn.png" alt="Centralized version control"></a></p>
-						<p>Examples: CVS, Subversion, Perforce</p>
-						<p><i><small>- <a href="http://progit.org/book/ch1-1.html">Pro Git 1.1 Getting Started About Version Control</a></small></i></p>
-					</section>
-					<section>
-						<h2>Version Control</h2>
-						<p><a href="images/vcs-3.png"><img src="images/vcs-3-tn.png" alt="Distributed version control"></a></p>
-						<p>Examples: Git, Mercurial, Bazaar</p>
-						<p><i><small>- <a href="http://progit.org/book/ch1-1.html">Pro Git 1.1 Getting Started About Version Control</a></small></i></p>
-					</section>
-				</section>
-				
-				<section>
-					<section>
-						<h2>Git primitives</h2>
-						<p>
-							Git is a stupid content tracker which only knows a 4 primitives or objects:
-							blobs, trees, commits, and tags
-						</p>
-						<p>
-							Every object is identifiable by a unique SHA-1 hash code
-						</p>
-					</section>
-					<section>
-						<h2>Git primitives - Blobs</h2>
-						<p>
-							<img src="images/object-blob.png">
-						</p>
-						<ul>
-							<li>Actual file contents</li>
-							<li>Doesn't contain metadata, e. g. filename</li>
-						</ul>
-					</section>
-					<section>
-						<h2>Git primitives - Trees</h2>
-						<p>
-							<img src="images/object-tree.png">
-						</p>
-						<ul>
-							<li>Directory information</li>
-							<li>Contains references to blobs or other trees</li>
-						</ul>
-					</section>
-					<section>
-						<h2>Git primitives - Commits</h2>
-						<p>
-							<img src="images/object-commit.png">
-						</p>
-						<ul>
-							<li>Contains metadata about each change introduced to the repository</li>
-							<li>Points to a tree object representing the state of the repository at a specific time</a>
-						</ul>
-					</section>
-					<section>
-						<h2>Git primitives - Tags</h2>
-						<p>
-							<img src="images/object-tag.png">
-						</p>
-						<ul>
-							<li>An arbitrary name for an object in the repository</li>
-						</ul>
-					</section>
-					<section>
-						<h2>Git primitives</h2>
-						<p>
-							<img src="images/objects-example.png">
-						</p>
-					</section>
-				</section>
-				<section>
-					<section>
-						<h2>The Staging Area - Git's Index</h2>
-						<ul>
-							<li>A temporary and dynamic binary file that describes the directory structure of the entire repository</li>
-							<li>Like a virtual directory representing your next commit</li>
-							<li>Allows planning or composing your commits</li>
-						</ul>
-					</section>
-					<section>
-						<h2>Local operations</h2>
-						<p>
-							<a href="images/local_operations.png"><img src="images/local_operations-tn.png"></a>
-						</p>
-						<p>
-							<i><small>- <a href="http://progit.org/book/ch1-3.html">Pro Git 1.3 Getting Started Git Basics</a></small></i>
-						</p>
-					</section>
-					<section>
-						<h2>States of a file</h2>
-						<p>
-							<a href="images/file_status_lifecycle.png"><img src="images/file_status_lifecycle-tn.png"></a>
-						</p>
-						<p>
-							<i><small>- <a href="http://progit.org/book/ch2-2.html">Pro Git 2.2 Git Basics Recording Changes to the Repository</a></small></i>
-						</p>
-					</section>
-					<section>
-						<h2>.gitignore</h2>
-						<ul>
-							<li><tt>.gitignore</tt> or <tt>.git/info/excludes</tt> contain files which git should ignore.</li>
-							<li>Usually contains temporary, IDE specific, and generated files</li>
-							<li><tt>.gitignore</tt> files apply to the current directory and its children</li>
-							<li><tt>.gitignore</tt> files in sub-directories override their parent's definitions</li>
-						</ul>
-					</section>
-				</section>
+  <slide class="logoslide nobackground">
+    <article class="flexbox vcenter">
+      <span><img src="images/smarchive_logo.png"></span>
+    </article>
+  </slide>
 
-				<section>
-					<h2>Initial setup</h2>
-					<p>
-<pre><code>$ git config --global user.name "Your Name"
-$ git config --global user.email you@example.com
+  <slide class="title-slide segue nobackground">
+    <aside class="gdbar"><img src="images/smarchive_icon_128.png"></aside>
+    <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p data-config-presenter><!-- populated from slide_config.json --></p>
+    </hgroup>
+  </slide>
+
+  <slide class="segue dark quote nobackground">
+    <aside class="gdbar right bottom"><img src="images/smarchive_icon_128.png"></aside>
+    <article>
+      <q>Git is distributed version control system focused on speed, effectivity and real-world usability on large projects.</q>
+      <div class="author"><a href="http://git-scm.com/about">About Git</a></div>
+    </article>
+  </slide>
+
+  <slide class="segue dark nobackground">
+    <aside class="gdbar"><img src="images/smarchive_icon_128.png"></aside>
+    <hgroup class="auto-fadein">
+      <h2>A Short History of Version Control</h2>
+    </hgroup>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Local Version Control</h2>
+    </hgroup>
+    <article>
+      <div class="flexbox vcenter"><a href="images/vcs-1.png"><img src="images/vcs-1-tn.png" alt="Local version control"></a></div>
+      <p>Example: RCS</p>
+      <footer class="source">Source: <a href="http://progit.org/book/ch1-1.html">Pro Git 1.1 Getting Started About Version Control</a></footer>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Centralized Version Control</h2>
+    </hgroup>
+    <article>
+      <div class="flexbox vcenter"><a href="images/vcs-2.png"><img src="images/vcs-2-tn.png" alt="Centralized version control"></a></div>
+      <p>Examples: CVS, Subversion, Perforce</p>
+      <footer class="source">Source: <a href="http://progit.org/book/ch1-1.html">Pro Git 1.1 Getting Started About Version Control</a></footer>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Distributed Version Control</h2>
+    </hgroup>
+    <article>
+      <div class="flexbox vcenter"><a href="images/vcs-3.png"><img src="images/vcs-3-tn.png" alt="Distributed version control"></a></div>
+      <p>Examples: Git, Mercurial, Bazaar</p>
+      <footer class="source">Source: <a href="http://progit.org/book/ch1-1.html">Pro Git 1.1 Getting Started About Version Control</a></footer>
+    </article>
+  </slide>
+
+  <slide class="segue dark nobackground">
+    <aside class="gdbar"><img src="images/smarchive_icon_128.png"></aside>
+    <hgroup class="auto-fadein">
+      <h2>Git Basics</h2>
+    </hgroup>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Git primitives</h2>
+    </hgroup>
+    <article>
+      <p>Git is a &quot;stupid content tracker&quot; which only knows a 4 primitives or objects:</p>
+      <ul>
+        <li>Blobs</li>
+        <li>Trees</li>
+        <li>Commits</li>
+        <li>Tags</li>
+      </ul>
+      <p>Every object is identifiable by a unique SHA1 hash code</p>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Git primitives</h2>
+      <h3>Blobs</h3>
+    </hgroup>
+    <article>
+      <div class="flexbox vcenter"><img src="images/object-blob.png" alt="Blob" title="Blob"></div>
+      <ul>
+        <li>Actual file contents</li>
+        <li>Doesn't contain metadata, e. g. filename</li>
+      </ul>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Git primitives</h2>
+      <h3>Trees</h3>
+    </hgroup>
+    <article>
+      <div class="flexbox vcenter"><img src="images/object-tree.png" alt="Tree" title="Tree"></div>
+      <ul>
+        <li>Directory information</li>
+        <li>Contains references to blobs or other trees</li>
+      </ul>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Git primitives</h2>
+      <h3>Commits</h3>
+    </hgroup>
+    <article>
+      <div class="flexbox vcenter"><img src="images/object-commit.png" alt="Commit" title="Commit"></div>
+      <ul>
+        <li>Contains metadata about each change introduced to the repository</li>
+        <li>Points to a tree object representing the state of the repository at a specific time</a>
+      </ul>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Git primitives</h2>
+      <h3>Tags</h3>
+    </hgroup>
+    <article>
+      <div class="flexbox vcenter"><img src="images/object-tag.png" alt="Tag" title="Tag"></div>
+      <ul>
+        <li>An arbitrary name for an object in the repository</li>
+      </ul>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Git primitives</h2>
+    </hgroup>
+    <article>
+      <div class="flexbox vcenter"><img src="images/objects-example.png"></div>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>The Staging Area</h2>
+      <h3>Git's Index</h3>
+    </hgroup>
+    <article>
+      <ul>
+        <li>A temporary and dynamic binary file that describes the directory structure of the entire repository</li>
+        <li>Like a virtual directory representing your next commit</li>
+        <li>Allows planning or composing your commits</li>
+      </ul>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Local Operations</h2>
+    </hgroup>
+    <article>
+      <div class="flexbox vcenter"><a href="images/local_operations.png"><img src="images/local_operations-tn.png"></a></div>
+      <footer class="source">Source: <a href="http://progit.org/book/ch1-3.html">Pro Git 1.3 Getting Started Git Basics</a></footer>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>States of a file</h2>
+    </hgroup>
+    <article>
+      <div class="flexbox vcenter"><a href="images/file_status_lifecycle.png"><img src="images/file_status_lifecycle-tn.png"></a></div>
+      <footer class="source">Source: <a href="http://progit.org/book/ch2-2.html">Pro Git 2.2 Git Basics Recording Changes to the Repository</a></footer>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>.gitignore</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li><tt>.gitignore</tt> or <tt>.git/info/excludes</tt> contain files which git should ignore.</li>
+        <li>Usually contains temporary, IDE specific, and generated files</li>
+        <li><tt>.gitignore</tt> files apply to the current directory and its children</li>
+        <li><tt>.gitignore</tt> files in sub-directories override their parent's definitions</li>
+      </ul>
+    </article>
+  </slide>
+
+  <slide class="segue dark nobackground">
+    <aside class="gdbar"><img src="images/smarchive_icon_128.png"></aside>
+    <hgroup class="auto-fadein">
+      <h2>Git By Example</h2>
+    </hgroup>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Git By Example</h2>
+      <h3>Initial Setup</h3>
+    </hgroup>
+    <article>
+      <p>Git has a lot of configuration options most of which have good default settings.</p>
+      <p>At a bare minimum configure your name (<tt>user.name</tt>) and email address (<tt>user.email</tt>).</p>
+      <pre class="prettyprint" data-lang="cli">
+<b>$ git config --global user.name "Your Name"
+$ git config --global user.email you@example.com</b>
 $ git config --global color.ui auto
 $ git config --global core.editor vim
-</code></pre>
-					</p>
-					<p>
-						You can find an extensive list of configuration options in <a href="http://schacon.github.com/git/git-config.html">git-config(1)</a>.
-					</p>
-				</section>
+</pre>
+      <p>You can find an extensive list of configuration options in <a href="http://schacon.github.com/git/git-config.html">git-config(1)</a>.</p>
+    </article>
+  </slide>
 
-				<section>
-					<section>
-						<h1>Basic usage</h1>
-						<p>
-							What you should know when working with git.
-						</p>
-					</section>
-					<section>
-						<h2>Basic usage - init, add, commit</h2>
-						<p>
-<pre><code>
-$ git init                                                                                                                                                 
-Initialized empty Git repository in /path/to/git-presentation/demo/.git/                                                                                                                           
-$ echo "Hi" > README.txt                                                                                                                                   
-$ git add README.txt                                                                                                                                       
+  <slide>
+    <hgroup>
+      <h2>Basic usage</h2>
+      <h3>init, add, commit</h3>
+    </hgroup>
+    <article class="smaller">
+      <pre class="prettyprint" data-lang="cli">
+<b>$ git init</b>
+Initialized empty Git repository in /path/to/git-presentation/demo/.git/
+$ echo "Hi" &gt; README.txt
+<b>$ git add README.txt</b>
 $ git status
 # On branch master
 #
 # Initial commit
 #
 # Changes to be committed:
-#   (use "git rm --cached <file>..." to unstage)
+#   (use "git rm --cached &lt;file&gt;..." to unstage)
 #
 #       new file:   README.txt
 #
-$ git commit -m 'Initial commit'
-[master (root-commit) e06170a] Initial commit
+<b>$ git commit -m 'Initial commit'</b>
+[master (root-commit) dd9aafc] Initial commit
  1 file changed, 1 insertion(+)
  create mode 100644 README.txt
-$ git log --oneline
-e06170a Initial commit
-</code></pre>
-						</p>
-					</section>
-					<section>
-						<h2>Basic usage - add, diff</h2>
-						<p>
-<pre><code>
-$ echo -e 'Hi there!\nHow are you?' > README.txt
-$ cat README.txt 
-Hi there!
-How are you?
-$ git diff
+<b>$ git log --oneline</b>
+dd9aafc Initial commit
+</pre>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Basic usage</h2>
+      <h3>add, diff</h3>
+    </hgroup>
+    <article class="smaller">
+      <pre class="prettyprint" data-lang="cli">
+$ echo 'Hi there!' &gt; README.txt
+<b>$ git diff</b>
 diff --git a/README.txt b/README.txt
-index b14df64..ceaeee6 100644
+index b14df64..137d409 100644
 --- a/README.txt
 +++ b/README.txt
-@@ -1 +1,2 @@
+@@ -1 +1 @@
 -Hi
 +Hi there!
-+How are you?
-$ git add README.txt
-$ git commit -m 'Expand README.txt file'
-[master 4a7ee78] Expand README.txt file
- 1 file changed, 2 insertions(+), 1 deletion(-)
-$ echo 'Another file' > another.txt
-$ echo 'Thanks, I am fine!' >> README.txt
+<b>$ git add README.txt &amp;&amp; git commit -m 'Expand README.txt file'</b>
+[master 48d6b45] Expand README.txt file
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+$ echo 'Another file' &gt; another.txt &amp;&amp; echo 'Another line' &gt;&gt; README.txt
 $ git status
 # On branch master
 # Changes not staged for commit:
-#
 #       modified:   README.txt
 #
 # Untracked files:
-#
 #       another.txt
 no changes added to commit (use "git add" and/or "git commit -a")
-</code></pre>
-						</p>
-					</section>
-					<section>
-						<h2>Basic usage - interactive add</h2>
-						<p>
-<pre><code>
-$ git add -i
-           staged     unstaged path
-  1:    unchanged        +1/-0 README.txt
+</pre>
+    </article>
+  </slide>
 
-*** Commands ***
-  1: [s]tatus     2: [u]pdate     3: [r]evert     4: [a]dd untracked
-  5: [p]atch      6: [d]iff       7: [q]uit       8: [h]elp
-What now> u
-           staged     unstaged path
-  1:    unchanged        +1/-0 [R]EADME.txt
-Update>> 1
-           staged     unstaged path
-* 1:    unchanged        +1/-0 [R]EADME.txt
-Update>> 
-updated one path
-
-What now> s
-           staged     unstaged path
-  1:        +1/-0      nothing README.txt
-
-What now> a
-  1: [a]nother.txt
-Add untracked>> 1
-* 1: [a]nother.txt
-Add untracked>> 
-added one path
-
-What now> q
-Bye.
-</code></pre>
-						</p>
-					</section>
-					<section>
-						<h2>Basic usage - interactive add (result)</h2>
-						<p>
-<pre><code>
+  <slide>
+    <hgroup>
+      <h2>Basic usage</h2>
+      <h3>diff and diff --cached</h3>
+    </hgroup>
+    <article class="smaller">
+      <pre class="prettyprint" data-lang="cli">
+$ git add another.txt
+$ echo 'Hello world!' &gt; another.txt
 $ git status
-# On branch master
 # Changes to be committed:
-#
-#       modified:   README.txt
 #       new file:   another.txt
 #
-$ echo -e 'Hi there, sugar!\nHow are you?\nFine, thanks!' > README.txt 
-$ git diff
-diff --git a/README.txt b/README.txt
-index b9b7316..3ba2ffb 100644
---- a/README.txt
-+++ b/README.txt
-@@ -1,3 +1,3 @@
--Hi there!
-+Hi there, sugar!
- How are you?
--Thanks, I am fine!
-+Fine, thanks!
-</code></pre>
-						</p>
-					</section>
-					<section>
-						<h2>Basic usage - interactive add (patch)</h2>
-						<p>
-<pre><code>
-$ git add -p
-diff --git a/README.txt b/README.txt
-index b9b7316..3ba2ffb 100644
---- a/README.txt
-+++ b/README.txt
-@@ -1,3 +1,3 @@
--Hi there!
-+Hi there, sugar!
- How are you?
--Thanks, I am fine!
-+Fine, thanks!
-Stage this hunk [y,n,q,a,d,/,s,e,?]? e
-###
-### This will open a VIm session in which you can edit the diff
-###
-$ git status
-# On branch master
-# Changes to be committed:
-#
-#       modified:   README.txt
-#
 # Changes not staged for commit:
-#
 #       modified:   README.txt
-#
-</code></pre>
-						</p>
-					</section>
-					<section>
-						<h2>Basic usage - diff (index)</h2>
-						<p>
-<pre><code>
-$ git diff --staged
-diff --git a/README.txt b/README.txt
-index b9b7316..0885cc6 100644
---- a/README.txt
-+++ b/README.txt
-@@ -1,3 +1,3 @@
--Hi there!
-+Hi there, sugar!
- How are you?
--Thanks, I am fine!
-+Thanks, I'm fine!
-</code></pre>
-						</p>
-					</section>
-					<section>
-						<h2>Basic usage - amending commits</h2>
-						<p>
-<pre><code>
-$ git commit --amend -m 'Expand README.txt and added another.txt'
-[master a468657] Expand README.txt and added another.txt
- 2 files changed, 3 insertions(+), 1 deletion(-)
- create mode 100644 another.txt
-$ git status
-# On branch master
-# Changes not staged for commit:
-#
-#       modified:   README.txt
-#
-no changes added to commit (use "git add" and/or "git commit -a")
-$ git checkout README.txt
-$ git status
-# On branch master
-nothing to commit (working directory clean)
-</code></pre>
-						</p>
-					</section>
-					<section>
-						<h2>Basic usage - revert</h2>
-						<p>
-<pre><code>
-$ git revert HEAD
+#       modified:   another.txt
+<b>$ git diff another.txt</b>
+--- a/another.txt
++++ b/another.txt
+@@ -1 +1 @@
+-Another file
++Hello world!
+<b>$ git diff --cached another.txt</b>
+new file mode 100644
+--- /dev/null
++++ b/another.txt
+@@ -0,0 +1 @@
++Another file
+</pre>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Basic usage</h2>
+      <h3>Amending commits</h3>
+    </hgroup>
+    <article class="smaller">
+      <pre class="prettyprint" data-lang="cli">
+$ git add README.txt &amp;&amp; <b>git commit -m 'Further expand README and add another file'</b>
+[master e09c203] Further expand README and add another file
+ 2 files changed, 2 insertions(+)
 $ git log --oneline
-4d34332 Revert "Expand README.txt and added another.txt"
-a468657 Expand README.txt and added another.txt
-4a7ee78 Expand README.txt file
-e06170a Initial commit
+<b>e09c203 Further expand README and add another file</b>
+48d6b45 Expand README.txt file
+dd9aafc Initial commit
+$ git status
+# Changes not staged for commit:
+#       modified:   another.txt
+$ git add another.txt &amp;&amp; <b>git commit -m 'Further expand README and add another file' --amend</b>
+[master da04a4e] Further expand README and add another file
+ 2 files changed, 2 insertions(+)
+$ git status
+nothing to commit (working directory clean)
+$ git log --oneline
+<b>da04a4e Further expand README and add another file</b>
+48d6b45 Expand README.txt file
+dd9aafc Initial commit
+</pre>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Basic usage</h2>
+      <h3>revert</h3>
+    </hgroup>
+    <article class="smaller">
+      <pre class="prettyprint" data-lang="cli">
+<b>$ git revert HEAD</b>
+[master 7fd5c3b] Revert "Further expand README and add another file"
+ 2 files changed, 2 deletions(-)
+ delete mode 100644 another.txt
+$ git log --oneline
+<b>7fd5c3b Revert "Further expand README and add another file"</b>
+da04a4e Further expand README and add another file
+48d6b45 Expand README.txt file
+dd9aafc Initial commit
+$ ls
+README.txt
 $ cat README.txt 
 Hi there!
-How are you?
-</code></pre>
-						</p>
-					</section>
-					<section>
-						<h2>Basic usage - reset</h2>
-						<p>
-<pre><code>
-$ git reset --hard HEAD~1
-HEAD is now at a468657 Expand README.txt and added another.txt
-$ cat README.txt 
-Hi there, sugar!
-How are you?
-Thanks, I'm fine!
-$ git log --oneline 
-a468657 Expand README.txt and added another.txt
-4a7ee78 Expand README.txt file
-e06170a Initial commit
-</code></pre>
-						</p>
-					</section>
-					<section>
-						<h2>Basic usage - stash</h2>
-						<p>
-<pre><code>
-$ echo 'Let me show you how to stash.' >> README.txt 
-$ git status
-# On branch master
-# Changes not staged for commit:
-#
-#       modified:   README.txt
-#
-no changes added to commit (use "git add" and/or "git commit -a")
-$ git stash 
-Saved working directory and index state WIP on master: b8440ec Add branch message to another.txt
-HEAD is now at b8440ec Add branch message to another.txt
-$ git stash list
-stash@{0}: WIP on master: b8440ec Add branch message to another.txt
-$ git stash show stash@{0}
- README.txt |    1 +
- 1 file changed, 1 insertion(+)
 $ git status
 # On branch master
 nothing to commit (working directory clean)
-$ git stash pop
-# On branch master
+</pre>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Basic usage</h2>
+      <h3>reset</h3>
+    </hgroup>
+    <article class="smaller">
+      <pre class="prettyprint" data-lang="cli">
+<b>$ git reset HEAD~1</b>
+Unstaged changes after reset:
+M       README.txt
+D       another.txt
+$ git log --oneline
+da04a4e Further expand README and add another file
+48d6b45 Expand README.txt file
+dd9aafc Initial commit
+$ git status
 # Changes not staged for commit:
-#
 #       modified:   README.txt
-#
-no changes added to commit (use "git add" and/or "git commit -a")
-Dropped refs/stash@{0} (306c9066def71d626613ed8197d238f6e4cf10d0)
-$ git stash
-Saved working directory and index state WIP on master: b8440ec Add branch message to another.txt
-HEAD is now at b8440ec Add branch message to another.txt
-$ git stash drop
-Dropped refs/stash@{0} (9cd9221903b469261a9ef81e7d0033f39654197d)
-$ git stash pop
-No stash found.
-</code></pre>
-						</p>
-					</section>
-					<section>
-						<h2>Basic usage - branch</h2>
-						<p>
-<pre><code>
-$ git branch
+#       deleted:    another.txt
+$ cat README.txt 
+Hi there!
+<b>$ git reset --hard</b>
+HEAD is now at da04a4e Further expand README and add another file
+$ git status
+nothing to commit (working directory clean)
+$ cat README.txt 
+Hi there!
+Another line
+</pre>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Basic usage</h2>
+      <h3>stash</h3>
+    </hgroup>
+    <article class="smaller">
+      <pre class="prettyprint" data-lang="cli">
+$ echo 'Let me show you how to stash.' &gt;&gt; README.txt
+$ git status
+# Changes not staged for commit:
+#       modified:   README.txt
+<b>$ git stash</b>
+Saved working directory and index state WIP on master: da04a4e Further expand README and add another file
+HEAD is now at da04a4e Further expand README and add another file
+$ git stash list
+stash@{0}: WIP on master: da04a4e Further expand README and add another file
+<b>$ git stash show stash@{0}</b>
+ README.txt | 1 +
+ 1 file changed, 1 insertion(+)
+$ git status
+nothing to commit (working directory clean)
+<b>$ git stash pop</b>
+# Changes not staged for commit:
+#       modified:   README.txt
+Dropped refs/stash@{0} (d4e736551ff0a046bab784ad2efe777ea5c8b6db)
+$ git reset --hard
+</pre>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Basic usage</h2>
+      <h3>branch</h3>
+    </hgroup>
+    <article class="smaller">
+      <pre class="prettyprint" data-lang="cli">
+<b>$ git branch</b>
 * master
-$ git checkout -b new_branch
+<b>$ git checkout -b new_branch</b>
 Switched to a new branch 'new_branch'
 $ git branch
   master
 * new_branch
-$ echo 'Hi from new_branch' >> another.txt 
-$ git commit -a -m 'Add branch message to another.txt'
-[new_branch b8440ec] Add branch message to another.txt
+$ echo 'Hi from new_branch' &gt;&gt; another.txt 
+<b>$ git commit -a -m 'Add branch message to another.txt'</b>
+[new_branch ae3eac3] Add branch message to another.txt
+ 1 file changed, 1 insertion(+)
+<b>$ git checkout master</b>
+Switched to branch 'master'
+$ cat another.txt
+Hello world!
+</pre>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Basic usage</h2>
+      <h3>branch</h3>
+    </hgroup>
+    <article class="smaller">
+      <pre class="prettyprint" data-lang="cli">
+$ git log --oneline master
+da04a4e Further expand README and add another file
+48d6b45 Expand README.txt file
+dd9aafc Initial commit
+$ git log --oneline new_branch 
+ae3eac3 Add branch message to another.txt
+da04a4e Further expand README and add another file
+48d6b45 Expand README.txt file
+dd9aafc Initial commit
+</pre>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Basic usage</h2>
+      <h3>merge</h3>
+    </hgroup>
+    <article class="smaller">
+      <pre class="prettyprint" data-lang="cli">
+$ git status
+# On branch master
+nothing to commit (working directory clean)
+<b>$ git merge new_branch</b>
+Updating da04a4e..ae3eac3
+<b>Fast-forward</b>
+ another.txt | 1 +
  1 file changed, 1 insertion(+)
 $ cat another.txt 
-Another file
+Hello world!
 Hi from new_branch
-</code></pre>
-						</p>
-					</section>
-				</section>
-				<section>
-					<section>
-						<h2>git-rebase</h2>
-						<p>
-<pre><code>git-rebase(1)
+$ git log --oneline
+<b>ae3eac3 Add branch message to another.txt</b>
+da04a4e Further expand README and add another file
+48d6b45 Expand README.txt file
+dd9aafc Initial commit
+</pre>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Basic usage</h2>
+      <h3>merge (2)</h3>
+    </hgroup>
+    <article class="smaller">
+      <pre class="prettyprint" data-lang="cli">
+$ git reset --hard HEAD~1
+HEAD is now at da04a4e Further expand README and add another file
+<b>$ git merge --no-ff new_branch</b>
+Merge made by the 'recursive' strategy.
+ another.txt | 1 +
+ 1 file changed, 1 insertion(+)
+$ git log --oneline
+<b>e37f4dd Merge branch 'new_branch'
+ae3eac3 Add branch message to another.txt</b>
+da04a4e Further expand README and add another file
+48d6b45 Expand README.txt file
+dd9aafc Initial commit
+<b>$ git branch -d new_branch</b>
+Deleted branch new_branch (was ae3eac3).
+</pre>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Basic usage</h2>
+      <h3>git-rebase</h3>
+    </hgroup>
+    <article>
+      <pre>
+git-rebase(1)
 
 NAME
        git-rebase - Forward-port local commits to the updated upstream head
-</code></pre>
-						</p>
-						<p class="fragment">
-							Uhm, what?!
-						</p>
-					</section>
-					<section>
-						<h2>git-rebase (1)</h2>
-						<p>
-							<a href="images/rebase0.png"><img src="images/rebase0.png"></a>
-						</p>
-						<p>
-							<i><small>- Source: <a href="http://book.git-scm.com">Git Community Book</a> / License: <a href="https://raw.github.com/schacon/gitbook/master/COPYING">GPL2</a></small></i>
-						</p>
-					</section>
-					<section>
-						<h2>git-rebase (2)</h2>
-						<p>
-							<a href="images/rebase1.png"><img src="images/rebase1.png"></a>
-						</p>
-						<p>
-							<i><small>- Source: <a href="http://book.git-scm.com">Git Community Book</a> / License: <a href="https://raw.github.com/schacon/gitbook/master/COPYING">GPL2</a></small></i>
-						</p>
-					</section>
-					<section>
-						<h2>git-rebase (3)</h2>
-						<p>
-							<a href="images/rebase2.png"><img src="images/rebase2.png"></a>
-						</p>
-						<p>
-							<i><small>- Source: <a href="http://book.git-scm.com">Git Community Book</a> / License: <a href="https://raw.github.com/schacon/gitbook/master/COPYING">GPL2</a></small></i>
-						</p>
-					</section>
-					<section>
-						<h2>git-rebase (4)</h2>
-						<p>
-							<a href="images/rebase3.png"><img src="images/rebase3.png"></a>
-						</p>
-						<p>
-							<i><small>- Source: <a href="http://book.git-scm.com">Git Community Book</a> / License: <a href="https://raw.github.com/schacon/gitbook/master/COPYING">GPL2</a></small></i>
-						</p>
-					</section>
-					<section>
-						<h2>git-rebase (5)</h2>
-						<p>
-							<a href="images/rebase4.png"><img src="images/rebase4.png"></a>
-						</p>
-						<p>
-							<i><small>- Source: <a href="http://book.git-scm.com">Git Community Book</a> / License: <a href="https://raw.github.com/schacon/gitbook/master/COPYING">GPL2</a></small></i>
-						</p>
-					</section>
-					<section>
-						<h2>Merge vs. rebase</h2>
-						<p>
-							<a href="images/rebase5.png"><img src="images/rebase5.png"></a>
-						</p>
-						<p>
-							<i><small>- Source: <a href="http://book.git-scm.com">Git Community Book</a> / License: <a href="https://raw.github.com/schacon/gitbook/master/COPYING">GPL2</a></small></i>
-						</p>
-					</section>
-					<section>
-						<h2>git-rebase - A word of advice</h2>
-						<p>
-							Rebasing changes history! Beware problems when you push already published changes after a rebase.
-						</p>
-						<div class="fragment">
-							<p>Rebasing an already published branch and pushing it again. That's a paddlin'.</p>
-							<p><iframe width="420" height="315" src="http://www.youtube.com/embed/RMr3i10AotU" frameborder="0" allowfullscreen></iframe></p>
-						</div>
-					</section>
-				</section>
+</pre>
+      <ul class="build">
+        <li>Uhm, what?!</li>
+        <li>Let's take a closer look!</li>
+      </ul>
+    </article>
+  </slide>
 
-				<section>
-					<section>
-						<h2>Basic usage - merge</h2>
-						<p>
-<pre><code>
-$ git checkout master 
-Switched to branch 'master'
-$ cat another.txt 
-Another file
-$ git merge new_branch 
-Updating a468657..b8440ec
-Fast-forward
- another.txt |    1 +
- 1 file changed, 1 insertion(+)
-$ git log --oneline 
-b8440ec Add branch message to another.txt
-a468657 Expand README.txt and added another.txt
-4a7ee78 Expand README.txt file
-e06170a Initial commit
-$ git branch -d new_branch 
-Deleted branch new_branch (was b8440ec).
-$ git branch
-* master
-</code></pre>
-						</p>
-					</section>
-				<section>
-						<h2>Basic usage - rebase</h2>
-						<p>
-<pre><code>
-git checkout -b rebase_demo
+  <slide>
+    <hgroup>
+      <h2>Basic usage</h2>
+      <h3>git-rebase (1)</h3>
+    </hgroup>
+    <article>
+      <div class="flexbox vcenter"><a href="images/rebase0.png"><img src="images/rebase0.png" alt="git-rebase"></a></div>
+      <footer class="source">Source: <a href="http://book.git-scm.com">Git Community Book</a> / License: <a href="https://raw.github.com/schacon/gitbook/master/COPYING">GPL2</a></footer>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Basic usage</h2>
+      <h3>git-rebase (2)</h3>
+    </hgroup>
+    <article>
+      <div class="flexbox vcenter"><a href="images/rebase1.png"><img src="images/rebase1.png" alt="git-rebase"></a></div>
+      <footer class="source">Source: <a href="http://book.git-scm.com">Git Community Book</a> / License: <a href="https://raw.github.com/schacon/gitbook/master/COPYING">GPL2</a></footer>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Basic usage</h2>
+      <h3>git-rebase (3)</h3>
+    </hgroup>
+    <article>
+      <div class="flexbox vcenter"><a href="images/rebase2.png"><img src="images/rebase2.png" alt="git-rebase"></a></div>
+      <footer class="source">Source: <a href="http://book.git-scm.com">Git Community Book</a> / License: <a href="https://raw.github.com/schacon/gitbook/master/COPYING">GPL2</a></footer>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Basic usage</h2>
+      <h3>git-rebase (4)</h3>
+    </hgroup>
+    <article>
+      <div class="flexbox vcenter"><a href="images/rebase3.png"><img src="images/rebase3.png" alt="git-rebase"></a></div>
+      <footer class="source">Source: <a href="http://book.git-scm.com">Git Community Book</a> / License: <a href="https://raw.github.com/schacon/gitbook/master/COPYING">GPL2</a></footer>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Basic usage</h2>
+      <h3>git-rebase (5)</h3>
+    </hgroup>
+    <article>
+      <div class="flexbox vcenter"><a href="images/rebase4.png"><img src="images/rebase4.png" alt="git-rebase"></a></div>
+      <footer class="source">Source: <a href="http://book.git-scm.com">Git Community Book</a> / License: <a href="https://raw.github.com/schacon/gitbook/master/COPYING">GPL2</a></footer>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Basic usage</h2>
+      <h3>Merge vs. Rebase</h3>
+    </hgroup>
+    <article>
+      <div class="flexbox vcenter"><a href="images/rebase5.png"><img src="images/rebase5.png" alt="git-rebase"></a></div>
+      <footer class="source">Source: <a href="http://book.git-scm.com">Git Community Book</a> / License: <a href="https://raw.github.com/schacon/gitbook/master/COPYING">GPL2</a></footer>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Basic usage</h2>
+      <h3>git-rebase - A word of advice</h3>
+    </hgroup>
+    <article>
+      <ul class="build">
+      <li>Rebasing changes the repository's history! Beware problems when you push already published changes after a rebase.</li>
+      <li>Rebasing in your local branches is fine, though.</li>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Basic usage</h2>
+      <h3>git-rebase</h3>
+    </hgroup>
+    <article class="smaller">
+      <pre class="prettyprint" data-lang="cli">
+$ git checkout -b rebase_demo
 Switched to a new branch 'rebase_demo'
 $ touch my_branch
-$ git add my_branch
-$ git commit -m 'Add my_branch demo file'
-[rebase_demo 9c3b9ab] Add my_branch demo file
+$ git add my_branch &amp;&amp; git commit -m 'Add my_branch demo file'
+[rebase_demo a81ebe5] Add my_branch demo file
  0 files changed
  create mode 100644 my_branch
-$ git checkout master 
+$ git checkout master
 Switched to branch 'master'
 $ touch master
-$ git add master
-$ git commit -m 'Add master demo file'
-[master 5079a48] Add master demo file
+$ git add master &amp;&amp; git commit -m 'Add master demo file'
+[master f05cbfe] Add master demo file
  0 files changed
  create mode 100644 master
-</code></pre>
-						</p>
-					</section>
-					<section>
-						<h2>Basic usage - rebase (continued)</h2>
-						<p>
-<pre><code>
-$ git checkout rebase_demo 
+</pre>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Basic usage</h2>
+      <h3>git-rebase (cont.)</h3>
+    </hgroup>
+    <article class="smaller">
+      <pre class="prettyprint" data-lang="cli">
+$ git checkout rebase_demo
 Switched to branch 'rebase_demo'
-$ git log --oneline
-9c3b9ab Add my_branch demo file
-[...]
-$ git log --oneline master
-5079a48 Add master demo file
-[...]
+$ git log --oneline | head -n1
+a81ebe5 Add my_branch demo file
 $ git rebase master
 First, rewinding head to replay your work on top of it...
 Applying: Add my_branch demo file
-$ git log --oneline 
-9daf093 Add my_branch demo file
-5079a48 Add master demo file
-[...]
-</code></pre>
-						</p>
-					</section>
-					<section>
-						<h2>Basic usage - cherry-pick</h2>
-						<p>
-<pre><code>$ git branch -m rebase_demo cherry-pick_demo
-$ git branch
+$ git log --oneline | head -n2
+04e42a7 Add my_branch demo file
+f05cbfe Add master demo file
+</pre>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Basic usage</h2>
+      <h3>cherry-pick</h3>
+    </hgroup>
+    <article class="smaller">
+      <pre class="prettyprint" data-lang="cli">
+$ git branch -m rebase_demo cherry-pick_demo &amp;&amp; git branch
 * cherry-pick_demo
   master
 $ touch another_branch_file
-$ git add another_branch_file
-$ git commit -m 'Add another branch file'
-[cherry-pick_demo db6f2d5] Add another branch file
+$ git add another_branch_file &amp;&amp; git commit -m 'Add another branch file'
+[cherry-pick_demo 505b117] Add another branch file
  0 files changed
  create mode 100644 another_branch_file
-$ git checkout master 
+$ git checkout master
 Switched to branch 'master'
-$ git log --oneline 
-5079a48 Add master demo file
-[...]
-$ git log --oneline cherry-pick_demo
-db6f2d5 Add another branch file
-[...]
-$ git cherry-pick db6f2d5
-[master f8b41a8] Add another branch file
+$ git log --oneline | head -n1
+f05cbfe Add master demo file
+$ git log --oneline cherry-pick_demo | head -n1
+505b117 Add another branch file
+$ git cherry-pick 505b117
+[master 0df0f3c] Add another branch file
  0 files changed
  create mode 100644 another_branch_file
-$ git log --oneline
-f8b41a8 Add another branch file
-5079a48 Add master demo file
-[...]
-</code></pre>
-						</p>
-					</section>
-					<section>
-						<h2>Basic usage - remote, clone</h2>
-						<p>
-<pre><code>
-$ cd ..
-$ git clone demo demo2
-Cloning into 'demo2'...
+$ git log --oneline | head -n2
+0df0f3c Add another branch file
+f05cbfe Add master demo file
+</pre>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Basic usage</h2>
+      <h3>remote, clone</h3>
+    </hgroup>
+    <article class="smaller">
+      <pre class="prettyprint" data-lang="cli">
+$ git clone . ../demo-clone &amp;&amp; cd ../demo-clone
+Cloning into '../demo-clone'...
 done.
-$ cd demo2
-$ git log --oneline
-f8b41a8 Add another branch file
-[...]
-$ git branch
-* master
+$ git log --oneline | head -n1
+0df0f3c Add another branch file
 $ git branch -a
 * master
-  remotes/origin/HEAD -> origin/master
+  remotes/origin/HEAD -&gt; origin/master
   remotes/origin/cherry-pick_demo
   remotes/origin/master
-$ git remote show
-origin
-$ git remote show origin 
+$ git remote show origin
 * remote origin
   Fetch URL: /path/to/git-presentation/demo
   Push  URL: /path/to/git-presentation/demo
@@ -686,277 +757,415 @@ $ git remote show origin
   Local branch configured for 'git pull':
     master merges with remote master
   Local ref configured for 'git push':
-    master pushes to master (local out of date)
-</code></pre>
-						</p>
-					</section>
-					<section>
-						<h2>Basic usage - push</h2>
-						<p>
-<pre><code>
-$ touch remote_add 
+    master pushes to master (up to date)
+</pre>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Basic usage</h2>
+      <h3>push</h3>
+    </hgroup>
+    <article class="smaller">
+      <pre class="prettyprint" data-lang="cli">
+$ touch remote_add
 $ git add remote_add
 $ git commit -m 'Add file in clone'
-[master 2c6d342] Add file in clone
+[master dea3557] Add file in clone
  0 files changed
  create mode 100644 remote_add
 $ git push
 Counting objects: 3, done.
-Delta compression using up to 8 threads.
+Delta compression using up to 2 threads.
 Compressing objects: 100% (2/2), done.
-Writing objects: 100% (2/2), 273 bytes, done.
+Writing objects: 100% (2/2), 269 bytes, done.
 Total 2 (delta 1), reused 0 (delta 0)
 Unpacking objects: 100% (2/2), done.
-To /path/to/git-presentation/demo
-   f8b41a8..2c6d342  master -> master
-</code></pre>
-						</p>
-					</section>
-					<section>
-						<h2>Basic usage - fetch (preparation)</h2>
-						<p>
-<pre><code>
+To /path/to/git-presentation/demo/.
+   0df0f3c..dea3557  master -&gt; master
+</pre>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Basic usage</h2>
+      <h3>fetch (preparations)</h3>
+    </hgroup>
+    <article class="smaller">
+      <pre class="prettyprint" data-lang="cli">
 $ cd ../demo
 $ touch local_add
 $ git add local_add
 $ git commit -m 'Add file on remote'
-[master 09996c1] Add file on remote
+$ touch local_add
+$ git add local_add &amp;&amp; git commit -m 'Add file on remote'
+[master ef5927f] Add file on remote
  0 files changed
  create mode 100644 local_add
-$ git checkout cherry-pick_demo 
+$ git checkout cherry-pick_demo
 Switched to branch 'cherry-pick_demo'
-$ cd ../demo2
-</code></pre>
-						</p>
-					</section>
-					<section>
-						<h2>Basic usage - fetch, merge</h2>
-						<p>
-<pre><code>
+$ cd ../demo-clone
+</pre>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Basic usage</h2>
+      <h3>fetch, merge</h3>
+    </hgroup>
+    <article class="smaller">
+      <pre class="prettyprint" data-lang="cli">
 $ git fetch
 remote: Counting objects: 3, done.
 remote: Compressing objects: 100% (2/2), done.
 remote: Total 2 (delta 1), reused 0 (delta 0)
 Unpacking objects: 100% (2/2), done.
-From /path/to/git-presentation/demo
-   2c6d342..09996c1  master     -> origin/master
-$ git merge origin master 
-Fast-forwarding to: origin
-Already up-to-date with master
-Merge made by the 'octopus' strategy.
- 0 files changed
- create mode 100644 local_add
-$ git log --oneline
-0113f88 Merge branch 'master', remote-tracking branch 'origin'
-09996c1 Add file on remote
-[...]
-</code></pre>
-						</p>
-					</section>
-						<section>
-						<h2>Basic usage - reset, rebase</h2>
-						<p>
-<pre><code>
-$ git reset --hard HEAD~2
-HEAD is now at 2c6d342 Add file in clone
-$ git rebase origin/master 
-First, rewinding head to replay your work on top of it...
-Fast-forwarded master to origin/master.
-$ git log --oneline
-09996c1 Add file on remote
-[...]
-</code></pre>
-						</p>
-					</section>
-					<section>
-						<h2>Basic usage - pull</h2>
-						<p>
-<pre><code>
-$ git pull
-Updating 2c6d342..09996c1
+From /path/to/git-presentation/demo/.
+   dea3557..ef5927f  master     -&gt; origin/master
+$ git merge origin master
+Updating dea3557..ef5927f
 Fast-forward
  0 files changed
  create mode 100644 local_add
-$ git log --oneline
-09996c1 Add file on remote
-2c6d342 Add file in clone
-[...]
-</code></pre>
-						</p>
-					</section>
-				</section>
+$ git log --oneline | head -n2
+ef5927f Add file on remote
+dea3557 Add file in clone
+</pre>
+    </article>
+  </slide>
 
-				<section>
-					<h2>When something went wrong</h2>
-					<p>
-						<a href="images/git-pretty.png"><img src="images/git-pretty-tn.png"></a>
-					</p>
-					<p>
-						<i><small>- <a href="http://justinhileman.info/article/git-pretty/">Git pretty</a></small></i>
-					</p>
-				</section>
+  <slide>
+    <hgroup>
+      <h2>Basic usage</h2>
+      <h3>reset, rebase</h3>
+    </hgroup>
+    <article class="smaller">
+      <pre class="prettyprint" data-lang="cli">
+$ git reset --hard HEAD~1
+HEAD is now at dea3557 Add file in clone
+$ git rebase origin
+First, rewinding head to replay your work on top of it...
+Fast-forwarded master to origin.
+$ git log --oneline | head -n2
+ef5927f Add file on remote
+dea3557 Add file in clone
+</pre>
+    </article>
+  </slide>
 
-				<section>
-					<section>
-						<h2>Workflows</h2>
-						<p><blockquote>Git is a tool for designing VCS workflows</blockquote></p>
-						<ul>
-							<li>Git itself doesn't impose a certain workflow</li>
-							<li>It is our job to design (or choose) a workflow suitable for our needs</li>
-						</ul>
-					</section>
-					<section>
-						<h2>Workflows - git-flow</h2>
-						<p>
-							<a href="images/git-flow.png"><img src="images/git-flow-tn.png" alt="git-flow workflow"></a>
-						</p>
-						<p><i><small>- Source: <a href="http://nvie.com/posts/a-successful-git-branching-model/">A successful Git branching model</a></small></i></p>
-					</section>
-					<section>
-						<h2>git-flow - Basics</h2>
-						<ul>
-							<li>Main branches are <tt>master</tt> and <tt>develop</tt></li>
-							<li><tt>master</tt> - source code of HEAD always reflects production-ready state</li>
-							<li><tt>develop</tt> - source code of HEAD always reflects state with latest delivered development changes for the next release</li>
-							<li>Automatic nightly builds (continuous integration) are built from <tt>develop</tt></li>
-							<li>When <tt>develop</tt> reaches stable point and is ready to be released, all of the changes are merged back into <tt>master</tt> and tagged</li>
-							<li>Each time when changes are merged back into <tt>master</tt>, this is a new production release by definition</li>
-						</ul>
-					</section>
-					<section>
-						<h2>git-flow - Supporting Branches</h2>
-						<ul>
-							<li>Help in parallel development between team members, ease tracking of features, prepare for production releases and to assist in quickly fixing live production problems</li>
-							<li>Always have a limited life time, since they will be removed eventually</li>
-							<li class="fragment">Feature branches</li>
-							<li class="fragment">Release branches</li>
-							<li class="fragment">Hotfix branches</li>
-						</ul>
-					</section>
-					<section>
-						<h2>git-flow - Feature Branches</h2>
-						<ul>
-							<li>Used to develop new features for upcoming release</li>
-							<li>Exists as long as the feature is in development, but will eventually be merged back into <tt>develop</tt> or discarded</li>
-							<li>Starting: <pre><code>$ git checkout -b myfeature develop</code></pre></li>
-							<li>Finishing:
-<pre><code>$ git checkout develop
-Switched to branch 'develop'
-$ git merge --no-ff myfeature
-Updating ea1b82a..05e9557
-(Summary of changes)
-$ git branch -d myfeature
-Deleted branch myfeature (was 05e9557).
-$ git push origin develop
-</code></pre></li>
-							<li>Note: <tt>--no-ff</tt> (or <tt>merge.ff=false</tt>) causes merge to always create new commit object, even if fast-forward was possible</li>
-							<li>Benefit: Easy reverting and logical coherence of commits</li>
-						</ul>
-					</section>
-					<section>
-						<h2>git-flow - Feature Branches</h2>
-						<p><img src="images/git-flow-feature-branches.png" alt="Feature branches (git-flow)"></p>
-					</section>
-					<section>
-						<h2>git-flow - Release Branches</h2>
-						<ul>
-							<li>Support preparation of a new production release</li>
-							<li>Allow for minor bug fixes and preparing meta-data for a release (version number, build dates, etc.)</li>
-							<li>No new features allowed</li>
-							<li>Branched off from <tt>develop</tt> when desired state of the new release is almost reached</li>
-							<li>Starting: 
-<pre><code>$ git checkout -b release-1.2 develop
-Switched to a new branch "release-1.2"
-# Update metadata to reflect coming release
-$ git commit -a -m "Bumped version number to 1.2"
-[release-1.2 74d9424] Bumped version number to 1.2
-1 files changed, 1 insertions(+), 1 deletions(-)
-</code></pre></li>
-							<li>Finishing: 
-<pre><code>$ git checkout master
-Switched to branch 'master'
-$ git merge --no-ff release-1.2
-Merge made by recursive.
-$ git tag -a 1.2
-$ git checkout develop
-Switched to branch 'develop'
-$ git merge --no-ff release-1.2
-Merge made by recursive.
-# May lead to a merge conflict. If so, fix it and commit.
-$ git branch -d release-1.2
-Deleted branch release-1.2 (was ff452fe).
-</code></pre></li>
-						</ul>
-					</section>
-					<section>
-						<h2>git-flow - Hotfix Branches</h2>
-						<ul>
-							<li>Much like release branches, albeit unplanned</li>
-							<li>Used when critical bug in production must be resolved immediately</li>
-							<li>Branched off from corresponding tag in <tt>master</tt></li>
-							<li>team members (on <tt>develop</tt>) can continue, while another person is preparing a quick production fix</li>
-							<li>Starting: 
-<pre><code>$ git checkout -b hotfix-1.2.1 master
-Switched to a new branch "hotfix-1.2.1"
-# IMPORTANT: Update metadata to reflect coming release
-$ git commit -a -m "Bumped version number to 1.2.1"
-[hotfix-1.2.1 41e61bb] Bumped version number to 1.2.1
-1 files changed, 1 insertions(+), 1 deletions(-)
-</code></pre></li>
-							<li>Finishing:
-<pre><code>$ git checkout master
-Switched to branch 'master'
-$ git merge --no-ff hotfix-1.2.1
-Merge made by recursive.
-$ git tag -a 1.2.1
-$ git checkout develop
-Switched to branch 'develop'
-$ git merge --no-ff hotfix-1.2.1
-Merge made by recursive.
-$ git branch -d hotfix-1.2.1
-Deleted branch hotfix-1.2.1 (was abbe5d6).
-</code></pre></li>
-						</ul>
-					</section>
-					<section>
-						<h2>git-flow - Hotfix Branches</h2>
-						<p><img src="images/git-flow-hotfix-branches.png" alt="Hotfix branches (git-flow)"></p>
-					</section>
-					<section>
-						<h2>Alternative: GitHub Flow</h2>
-						<p>
-							<ul>
-								<li>Anything in the <tt>master</tt> branch is deployable</li>
-								<li>To work on something new, create a descriptively named branch off of <tt>master</tt> (ie: <tt>new-oauth2-scopes</tt>)</li>
-								<li>Commit to that branch locally and regularly push your work to the same named branch on the server</li>
-								<li>When you need feedback or help, or you think the branch is ready for merging, open a pull request</li>
-								<li>After someone else has reviewed and signed off on the feature, you can merge it into <tt>master</tt></li>
-								<li>Once it is merged and pushed to <tt>master</tt>, you can and should deploy immediately</li>
-							</ul>
-						</p>
-						<p><i><small>- Source: <a href="http://scottchacon.com/2011/08/31/github-flow.html">Issues with git-flow</a></small></i></p>
-					</section>
-				</section>
+  <slide>
+    <hgroup>
+      <h2>Basic usage</h2>
+      <h3>pull</h3>
+    </hgroup>
+    <article class="smaller">
+      <pre class="prettyprint" data-lang="cli">
+$ git reset --hard HEAD~1
+HEAD is now at dea3557 Add file in clone
+$ git pull
+Updating dea3557..ef5927f
+Fast-forward
+ 0 files changed
+ create mode 100644 local_add
+$ git log --oneline | head -n2
+ef5927f Add file on remote
+dea3557 Add file in clone
+</pre>
+    </article>
+  </slide>
 
-				<section>
-					<section>
-						<h2>Commit messages</h2>
-						<p>
-							A good commit message:
-							<ul>
-								<li>Is concise and clear</li>
-								<li>Has a short description as its first line, followed by a blank line</li>
-								<li>Can be just a single line if it can be both brief and complete</li>
-								<li>Describes the changes and rationale, at a high level</li>
-								<li>Mentions any tickets ("Fixes #23, refs #23") fixed by the included changes.</li>
-								<li>Mentions any caveats of the changes, unintended side effects, etc.</li>
-							</ul>
-						</p>
-					</section>
-					<section>
-						<h2>Commit messages</h2>
-						<p>Format of a git commit message:
-							<pre><code>Capitalized, short (50 chars or less) summary
+  <slide class="segue dark nobackground">
+    <aside class="gdbar"><img src="images/smarchive_icon_128.png"></aside>
+    <hgroup class="auto-fadein">
+      <h2>Git Tips and Tricks</h2>
+    </hgroup>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Git Tips and Tricks</h2>
+      <h3>When something went wrong</h3>
+    </hgroup>
+    <article>
+      <div class="flexbox vcenter"><a href="images/git-pretty.png"><img src="images/git-pretty-tn.png"></a></div>
+      <footer class="source">Source: <a href="http://justinhileman.info/article/git-pretty/">Git pretty</a></footer>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Git Tips and Tricks</h2>
+      <h3>Aliases</h3>
+    </hgroup>
+    <article>
+      <p>Useful abbreviations, new commands, or shortcuts in general</p>
+      <p>Typical abbreviations:</p>
+        <pre class="prettyprint" data-lang="cli">
+git config --global alias.st status
+git config --global alias.co checkout
+git config --global alias.ci commit
+git config --global alias.br branch
+</pre>
+      <p><tt>git st</tt> will run <tt>git status</tt>, <tt>git co</tt> will run <tt>git checkout</tt> and so forth.</p>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Git Tips and Tricks</h2>
+      <h3>Aliases</h3>
+    </hgroup>
+    <article>
+      <p>The process of creating a timestamped production tag can be automated with a simple script or a git alias like this one:</p>
+      <pre class="prettyprint" data-lang="cli">git config alias.datetag '!git tag $(date "+%Y%m%d%H%M")'</pre>
+      <p>With this alias, <tt>git datetag</tt> will create a new tag from <tt>HEAD</tt> with the current timestamp.</p>
+      <footer class="source">Source: <a href="http://reinh.com/blog/2009/03/02/a-git-workflow-for-agile-teams.html">A Git Workflow for Agile Teams</a></footer>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Git Tips and Tricks</h2>
+      <h3>Aliases</h3>
+    </hgroup>
+    <article>
+      <div class="flexbox vcenter">The process of creating a timestamped production tag can be automated with a simple script or a git alias like this one:</div>
+      <pre class="prettyprint" data-lang="cli">git config --global alias.lg \
+  "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)
+  %C(bold blue)&lt;%an&gt;%Creset' --abbrev-commit --date=relative"</pre>
+      <p><img src="images/git-lg.png"></p>
+      <footer class="source">Source: <a href="http://www.jukie.net/bart/blog/pimping-out-git-log/">Pimping out git log</a></footer>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Git Tips and Tricks</h2>
+      <h3>Bash Completion</h3>
+    </hgroup>
+    <article>
+      <ul>
+        <li>Tab completion for git commands, branches, SHA1 hashes&hellip;</li>
+        <li>Usually installed with the git packages of your operating system</li>
+      </ul>
+      <pre class="prettyprint" data-lang="cli"># Add to your ~/.bashrc
+if [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+fi
+</pre>
+      <footer class="source">Source: <a href="http://git-scm.com/book/en/Git-Basics-Tips-and-Tricks#Auto-Completion">Auto-Completion</a></footer>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Git Tips and Tricks</h2>
+      <h3>Bash Completion</h3>
+    </hgroup>
+    <article>
+      <p>Show some information about the current git branch in your shell prompt</p>
+      <pre class="prettyprint" data-lang="cli">PS1='\[\033[01;32m\]\u@\h\[\033[01;34m\]
+ \w\[\033[31m\]$(__git_ps1 " (%s)") \[\033[01;34m\]$\[\033[00m\] '</pre>
+      <p><img src="images/bash-prompt.png" alt="Bash prompt demo"></p>
+      <p class="fragment">Fancy prompt magic: <a href="http://volnitsky.com/project/git-prompt/">GIT Prompt</a></p>
+    </article>
+  </slide>
+
+  <slide class="segue dark nobackground">
+    <aside class="gdbar"><img src="images/smarchive_icon_128.png"></aside>
+    <hgroup class="auto-fadein">
+      <h2>Git Workflows</h2>
+    </hgroup>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Git Workflows</h2>
+    </hgroup>
+    <article>
+      <p><q>Git is a tool for designing VCS workflows</q></p>
+      <ul>
+        <li>Git itself doesn't impose a certain workflow</li>
+        <li>5 developers use probably 7 different workflows with git</li>
+        <li>It is our job to design (or choose) a workflow suitable for our needs and enforce it</li>
+      </ul>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Git Workflows</h2>
+      <h3>git-flow</h3>
+    </hgroup>
+    <article>
+      <div class="flexbox vcenter"><a href="images/git-flow.png"><img src="images/git-flow-tn.png" alt="git-flow workflow"></a></div>
+      <footer class="source">Source: <a href="http://nvie.com/posts/a-successful-git-branching-model/">A successful Git branching model</a></footer>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Git Workflows</h2>
+      <h3>git-flow - Basics</h3>
+    </hgroup>
+    <article>
+      <ul>
+        <li>Main branches are <tt>master</tt> and <tt>develop</tt></li>
+        <li><tt>master</tt> - source code of HEAD always reflects production-ready state</li>
+        <li><tt>develop</tt> - source code of HEAD always reflects state with latest delivered development changes for the next release</li>
+        <li>Automatic nightly builds (continuous integration) are built from <tt>develop</tt></li>
+        <li>When <tt>develop</tt> reaches stable point and is ready to be released, all of the changes are merged back into <tt>master</tt> and tagged</li>
+        <li>Each time when changes are merged back into <tt>master</tt>, this is a new production release by definition</li>
+        <li><strong>Note:</strong> <a href="https://github.com/nvie/gitflow" title="git-flow extension">git-flow</a> git extension makes using this workflow very easy</li>
+      </ul>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Git Workflows</h2>
+      <h3>git-flow - Supporting Branches</h3>
+    </hgroup>
+    <article>
+      <ul class="build">
+        <li>Feature branches</li>
+        <li>Release branches</li>
+        <li>Hotfix branches</li>
+        <li>Help in parallel development between team members, ease tracking of features, prepare for production releases and to assist in quickly fixing live production problems</li>
+        <li>Always have a limited life time, since they will be removed eventually</li>
+      </ul>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Git Workflows</h2>
+      <h3>git-flow - Feature Branches</h3>
+    </hgroup>
+    <article class="smaller">
+      <ul>
+        <li>Used to develop new features for upcoming release</li>
+        <li>Exists as long as the feature is in development, but will eventually be merged back into <tt>develop</tt> or discarded</li>
+        <li>Starting: <pre class="prettyprint" data-lang="cli">$ git feature start 123-shortdescr</pre></li>
+        <li>Finishing:
+<pre class="prettyprint" data-lang="cli">$ git feature finish 123-shortdescr
+$ git feature publish 123-shortdescr
+</pre>
+        </li>
+        <li>Please use the issue number as prefix and a short descriptor as suffix of the branch name, e. g. 42-meaningoflife for the feature branch for issue #42 which implements the meaning of life</li>
+      </ul>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Git Workflows</h2>
+      <h3>git-flow - Feature Branches</h3>
+    </hgroup>
+    <article>
+      <div class="flexbox vcenter"><img src="images/git-flow-feature-branches.png" alt="Feature branches (git-flow)"></div>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Git Workflows</h2>
+      <h3>git-flow - Release Branches</h3>
+    </hgroup>
+    <article class="smaller">
+      <ul>
+        <li>Support preparation of a new production release</li>
+          <li>Allow for minor bug fixes and preparing meta-data for a release (version number, build dates, etc.)</li>
+          <li>No new features allowed</li>
+          <li>Branched off from <tt>develop</tt> when desired state of the new release is almost reached</li>
+          <li>Starting: <pre class="prettyprint" data-lang="cli">$ git flow release start 1.2</pre></li>
+          <li>Finishing: <pre class="prettyprint" data-lang="cli">$ git flow release finish 1.2</pre></li>
+      </ul>      
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Git Workflows</h2>
+      <h3>git-flow - Hotfix Branches</h3>
+    </hgroup>
+    <article class="smaller">
+      <ul>
+        <li>Much like release branches, albeit unplanned</li>
+        <li>Used when critical bug in production must be resolved immediately</li>
+        <li>Branched off from corresponding tag in <tt>master</tt></li>
+        <li>team members (on <tt>develop</tt>) can continue, while another person is preparing a quick production fix</li>
+        <li>Starting: <pre class="prettyprint" data-lang="cli">$ git flow hotfix start 1.2.1</pre></li>
+        <li>Finishing: <pre class="prettyprint" data-lang="cli">$ git flow hotfix finish 1.2.1</pre></li>
+      </ul>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Git Workflows</h2>
+      <h3>git-flow - Hotfix Branches</h3>
+    </hgroup>
+    <article>
+      <div class="flexbox vcenter"><img src="images/git-flow-hotfix-branches.png" alt="Hotfix branches (git-flow)"></div>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Git Workflows</h2>
+      <h3>Workflow used at GitHub</h3>
+    </hgroup>
+    <article>
+      <ul>
+        <li>Anything in the <tt>master</tt> branch is deployable</li>
+        <li>To work on something new, create a descriptively named branch off of <tt>master</tt> (ie: <tt>new-oauth2-scopes</tt>)</li>
+        <li>Commit to that branch locally and regularly push your work to the same named branch on the server</li>
+        <li>When you need feedback or help, or you think the branch is ready for merging, open a pull request</li>
+        <li>After someone else has reviewed and signed off on the feature, you can merge it into <tt>master</tt></li>
+        <li>Once it is merged and pushed to <tt>master</tt>, you can and should deploy immediately</li>
+      </ul>
+      <footer class="source">Source: <a href="http://scottchacon.com/2011/08/31/github-flow.html">Issues with git-flow</a></footer>
+    </article>
+  </slide>
+
+  <slide class="segue dark nobackground">
+    <aside class="gdbar"><img src="images/smarchive_icon_128.png"></aside>
+    <hgroup class="auto-fadein">
+      <h2>Best practices</h2>
+    </hgroup>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Best practices</h2>
+      <h3>Commit messages</h3>
+    </hgroup>
+    <article>
+      <p>A good commit message
+        <ul>
+          <li>is concise and clear</li>
+          <li>has a short description as its first line, followed by a blank line</li>
+          <li>describes the changes and rationale, at a high level</li>
+          <li>mentions relevant tickets fixed or referenced by the included changes ("fixes #23, refs #42").</li>
+          <li>mentions any caveats of the changes, unintended side effects, etc.</li>
+          <li>can be just a single line if it can be both brief and complete</li>
+        </ul>
+      </p>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Best practices</h2>
+      <h3>Commit messages</h3>
+    </hgroup>
+    <article>
+      <p>Format of a git commit message:
+<pre>Capitalized, short (50 chars or less) summary
 
 More detailed explanatory text, if necessary.  Wrap it to about 72
 characters or so.  In some contexts, the first line is treated as the
@@ -965,227 +1174,104 @@ line separating the summary from the body is critical (unless you omit
 the body entirely); tools like rebase can get confused if you run the
 two together.
 
-List of fixed or referenced tickets.</code></pre>
-						</p>
-						<p>
-							<i><small>- <a href="http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html">A Note About Git Commit Messages</a></small></i>
-						</p>
-					</section>
-					<section>
-						<h2>Commit messages - Real life example</h2>
-						<p>Output of <tt>git log</tt>
-<pre><code>commit 012bfbf41fdc466036f336c9033ecd188ce4ab4e
+List of fixed or referenced tickets.
+</pre>
+      </p>
+      <footer class="source">Source: <a href="http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html">A Note About Git Commit Messages</a></footer>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Best practices</h2>
+      <h3>Example commit messages</h3>
+    </hgroup>
+    <article class="smaller">
+      <p>Output of <tt>git log</tt>
+<pre>commit 012bfbf41fdc466036f336c9033ecd188ce4ab4e
 Author: Jochen Schalanda <j.schalanda@smarchive.de>
 Date:   Thu Apr 12 18:10:40 2012 +0200
 
-    Upgraded to Gradle 1.0-rc-1, fixes #169
-
-commit e77c11785e7bba8fd227a25b7e6cea2f83af16c2
-Author: Jochen Schalanda <j.schalanda@smarchive.de>
-Date:   Fri Mar 30 18:15:40 2012 +0200
-
-    Added init script for checkpdf-service
-    
-    * The init script currently supports Debian-like Linux distributions
-      and uses 'daemon' for starting and stopping services (instead of
-      start-stop-daemon)
-    * fixes #56
+    Upgrade to Gradle 1.0-rc-1, fixes #169
 
 commit 633a288cbb6c026f433a46bfb4854b2ef2677eb1
 Author: Jochen Schalanda <j.schalanda@smarchive.de>
 Date:   Fri Mar 30 11:00:14 2012 +0200
 
-    Added handling of empty HTTP bodies
+    Add handling of empty HTTP bodies
     
     * PdfChecker#isValidPdf() threw an IllegalArgumentException if the input
       stream was null (i. e. the HTTP body was empty)
-    * fixes #82</code></pre>
-						</p>
-					</section>
-					<section>
-						<h2>Commit messages - Real life example</h2>
-						<p>Output of <tt>git log --oneline</tt>
-<pre><code>012bfbf Upgraded to Gradle 1.0-rc-1, fixes #169
-e77c117 Added init script for checkpdf-service
-633a288 Added handling of empty HTTP bodies</code></pre>
-						</p>
-					</section>
-					<section>
-						<h2>Commit messages - Further reading</h2>
-						<p>
-							<ul>
-								<li><a href="http://ablogaboutcode.com/2011/03/23/proper-git-commit-messages-and-an-elegant-git-history/">Proper Git Commit Messages and an Elegant Git History</a></li>
-								<li><a href="http://lbrandy.com/blog/2009/03/writing-better-commit-messages/">Writing better commit messages</a></li>
-								<li><a href="http://wildbit.com/blog/2008/11/11/the-importance-of-commit-messages/">The importance of commit messages</a></li>
-								<li><a href="http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html">A Note About Git Commit Messages</a></li>
-							</ul>
+    * fixes #82
+</pre>
+      </p>
+    </article>
+  </slide>
 
-						</p>
-					</section>
-					<section>
-						<h2>Commit messages</h2>
-						<p>
-							Using <a href="http://whatthecommit.com/">WhatTheCommit.com</a>. That's a paddlin'.
-						</p>
-						<p>
-							<iframe width="420" height="315" src="http://www.youtube.com/embed/RMr3i10AotU" frameborder="0" allowfullscreen></iframe>
-						</p>
-					</section>
-				</section>
-				
-				<section>
-					<section>
-						<h2>Aliases</h2>
-						<p>Useful abbreviations, new commands, or shortcuts in general</p>
-						<p>Typical abbreviations:
-<pre><code>git config --global alias.st status
-git config --global alias.co checkout
-git config --global alias.ci commit
-git config --global alias.br branch
-</code></pre>
-						</p>
-						<p>
-							<tt>git st</tt> will run <tt>git status</tt>
-						</p>
-					</section>
-					<section>
-						<h2>Aliases</h2>
-							<p>
-								The process of creating a timestamped production tag can be automated with a simple script or a git alias like this one:
-							</p>
-							<p>
-								<pre><code>git config alias.datetag '!git tag $(date "+%Y%m%d%H%M")'</code></pre>
-							</p>
-							<p>
-								With this alias, <tt>git datetag</tt> will create a new tag from <tt>HEAD</tt> with the current timestamp.
-							</p>
-							<p>
-								<i><small>- <a href="http://reinh.com/blog/2009/03/02/a-git-workflow-for-agile-teams.html">A Git Workflow for Agile Teams</a></small></i>
-							</p>
-					</section>
-					<section>
-						<h2>Aliases</h2>
-						<p>
-							<pre><code>git config --global alias.lg \
-  "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)
-  %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative"</code></pre>
-						</p>
-						<p>
-							<img src="images/git-lg.png">
-						</p>
-						<p>
-							<i><small>- <a href="http://www.jukie.net/bart/blog/pimping-out-git-log/">Pimping out git log</a></small></i>
-						</p>
-					</section>
-				</section>
+  <slide>
+    <hgroup>
+      <h2>Best practices</h2>
+      <h3>Example commit messages</h3>
+    </hgroup>
+    <article>
+      <p>Output of <tt>git log --oneline</tt>
+        <pre>012bfbf Upgrade to Gradle 1.0-rc-1, fixes #169
+633a288 Added handling of empty HTTP bodies
+</pre>
+      </p>
+    </article>
+  </slide>
 
-				<section>
-					<section>
-						<h2>Bash completion</h2>
-						<ul>
-							<li>Tab completion for git commands, branches, SHA-1 hashes&hellip;</li>
-							<li>Usually installed with the git packages of your OS</li>
-						</ul>
-						<p><pre><code># Add to your ~/.bashrc
-if [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-fi</code></pre>
-						</p>
-						<p>
-							<i><small>- <a href="http://git-scm.com/book/en/Git-Basics-Tips-and-Tricks#Auto-Completion">Auto-Completion</a></small></i>
-						</p>
-					</section>
-					<section>
-						<h2>Bash prompt</h2>
-						<p>Show some information about the current git branch in your shell prompt</p>
-						<p>
-							<pre><code>PS1='\[\033[01;32m\]\u@\h\[\033[01;34m\] \w\[\033[31m\]$(__git_ps1 " (%s)") \[\033[01;34m\]$\[\033[00m\] '</code></pre>
-							<img src="images/bash-prompt.png" alt="Bash prompt demo">
-						</p>
-						<p class="fragment">Fancy prompt magic: <a href="http://volnitsky.com/project/git-prompt/">GIT Prompt</a></p>
-					</section>
-				</section>
+  <slide>
+    <hgroup>
+      <h2>Best practices</h2>
+      <h3>Commit messages</h3>
+    </hgroup>
+    <article>
+      <ul>
+        <li><a href="http://ablogaboutcode.com/2011/03/23/proper-git-commit-messages-and-an-elegant-git-history/">Proper Git Commit Messages and an Elegant Git History</a></li>
+        <li><a href="http://lbrandy.com/blog/2009/03/writing-better-commit-messages/">Writing better commit messages</a></li>
+        <li><a href="http://wildbit.com/blog/2008/11/11/the-importance-of-commit-messages/">The importance of commit messages</a></li>
+        <li><a href="http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html">A Note About Git Commit Messages</a></li>
+      </ul>
+    </article>
+  </slide>
 
-				<section>
-					<h2>Further reading</h2>
-					<ul>
-						<li><a href="http://zrusin.blogspot.de/2007/09/git-cheat-sheet.html">Git cheat sheet</a></li>
-						<li><a href="http://book.git-scm.com/">The Git Community Book</a></li>
-						<li><a href="http://gitref.org/">Git Reference</a></li>
-						<li><a href="http://progit.org/">Pro Git</a></li>
-						<li><a href="http://nvie.com/posts/a-successful-git-branching-model/">A successful Git branching model (git-flow)</a></li>
-						<li><a href="http://schacon.github.com/git/everyday.html">Everyday GIT With 20 Commands Or So</a></li>
-						<li><a href="http://www.slideshare.net/kogakure/sei-kein-bldmann-und-nimm-git-1830449">Sei (k)ein Blödmann und nimm Git!</a></li>
-					</ul>
-				</section>
-			
-				<section>	
-					<section>
-						<h1>Thanks for listening!</h1>
-					</section>
-					<section>
-						<h1>Questions?</h1>
-					</section>
-				</section>
-			</div>
+  <slide>
+    <hgroup>
+      <h2>Further reading</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li><a href="http://zrusin.blogspot.de/2007/09/git-cheat-sheet.html">Git cheat sheet</a></li>
+        <li><a href="http://book.git-scm.com/">The Git Community Book</a></li>
+        <li><a href="http://gitref.org/">Git Reference</a></li>
+        <li><a href="http://progit.org/">Pro Git</a></li>
+        <li><a href="http://nvie.com/posts/a-successful-git-branching-model/">A successful Git branching model (git-flow)</a></li>
+        <li><a href="http://schacon.github.com/git/everyday.html">Everyday GIT With 20 Commands Or So</a></li>
+        <li><a href="http://www.slideshare.net/kogakure/sei-kein-bldmann-und-nimm-git-1830449">Sei (k)ein Blödmann und nimm Git!</a></li>
+      </ul>
+    </article>
+  </slide>
 
-			<!-- The navigational controls UI -->
-			<aside class="controls">
-				<a class="left" href="#">&#x25C4;</a>
-				<a class="right" href="#">&#x25BA;</a>
-				<a class="up" href="#">&#x25B2;</a>
-				<a class="down" href="#">&#x25BC;</a>
-			</aside>
+  <slide class="thank-you-slide segue nobackground">
+    <aside class="gdbar right"><img src="images/smarchive_icon_128.png"></aside>
+    <article class="flexbox vleft auto-fadein">
+      <h2>&lt;Thank You!&gt;</h2>
+    </article>
+    <p class="auto-fadein" data-config-contact>
+      <!-- populated from slide_config.json -->
+    </p>
+  </slide>
 
-			<!-- Displays presentation progress, max value changes via JS to reflect # of slides -->
-			<div class="progress"><span></span></div>
-			
-		</div>
-		
-		<script src="reveal.js/js/reveal.js"></script>
+  <slide class="logoslide dark nobackground">
+    <article class="flexbox vcenter">
+      <span><img src="images/smarchive_logo_white.png"></span>
+    </article>
+  </slide>
 
-		<!-- Optional libraries for code syntax highlighting and classList support in IE9 -->
-		<script src="reveal.js/lib/highlight.js"></script>
-		<script src="reveal.js/lib/classList.js"></script>
-		
-		<script>
-			// Parse the query string into a key/value object
-			var query = {};
-			location.search.replace( /[A-Z0-9]+?=(\w*)/gi, function(a) {
-				query[ a.split( '=' ).shift() ] = a.split( '=' ).pop();
-			} );
+  <slide class="backdrop"></slide>
 
-			Reveal.initialize({
-				// Display controls in the bottom right corner
-				controls: true,
-
-				// Display a presentation progress bar
-				progress: true,
-
-				// If true; each slide will be pushed to the browser history
-				history: true,
-
-				// Flags if mouse wheel navigation should be enabled
-				mouseWheel: true,
-
-				// Apply a 3D roll to links on hover
-				rollingLinks: true,
-
-				// UI style
-				theme: query.theme || 'default', // default/neon
-
-				// Transition style
-				transition: query.transition || 'default' // default/cube/page/concave/linear(2d)
-			});
-
-			// Example of binding an event to a state. This listener will trigger
-			// when the slide with 'data-state="blurred"' is opened.
-			document.addEventListener( 'blurred', function() {
-				
-			}, false );
-
-			hljs.initHighlightingOnLoad();
-		</script>
-
-	</body>
+</slides>
+</body>
 </html>
