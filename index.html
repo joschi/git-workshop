@@ -1239,6 +1239,29 @@ Date:   Fri Mar 30 11:00:14 2012 +0200
 
   <slide>
     <hgroup>
+      <h2>Best practices</h2>
+      <h3>When to commit, when to push</h3>
+    </hgroup>
+    <article>
+      <p>Commits
+        <ul>
+          <li>should not depend on other commits. Otherwise it makes cherry-picking hard.</li>
+          <li>should be small, e. g. renaming a method (and its usages!) justifies its own commit</li>
+          <li>should be made often and not just before you go home</li>
+        </ul>
+      </p>
+      <p>Push your changes
+        <ul>
+          <li>when the feature/hotfix/release is done</li>
+          <li>when you reach a "milestone" during you work</li>
+          <li>before you call it a day. Tests should be green in this case</li>
+        </ul>
+      </p>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
       <h2>Further reading</h2>
     </hgroup>
     <article>
