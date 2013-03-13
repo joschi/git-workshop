@@ -224,15 +224,26 @@
 
   <slide>
     <hgroup>
-      <h2>.gitignore</h2>
+      <h2>Excluding files with .gitignore</h2>
     </hgroup>
     <article>
-      <ul>
-        <li><tt>.gitignore</tt> or <tt>.git/info/excludes</tt> contain files which git should ignore.</li>
-        <li>Usually contains temporary, IDE specific, and generated files</li>
-        <li><tt>.gitignore</tt> files apply to the current directory and its children</li>
-        <li><tt>.gitignore</tt> files in sub-directories override their parent's definitions</li>
-      </ul>
+      <p>
+        <ul>
+          <li><tt>.gitignore</tt> or <tt>.git/info/excludes</tt> contain files which git should ignore.</li>
+          <li>Usually contains temporary, IDE specific, and generated files</li>
+          <li><tt>.gitignore</tt> files apply to the current directory and its children</li>
+          <li><tt>.gitignore</tt> files in sub-directories override their parent's definitions</li>
+        </ul>
+      </p>
+      <p>Example:
+        <pre>
+# Exclude all temporary files
+tmp/
+*.tmp
+*.swp
+</pre>
+      </p>
+      <p>A very comprehensive list of composable <tt>.gitignore</tt> file fragments is available on GitHub in <a href="https://github.com/github/gitignore">github/gitignore</a>.</p>
     </article>
   </slide>
 
@@ -251,7 +262,7 @@
     <article>
       <p>Git has a lot of configuration options most of which have good default settings.</p>
       <p>At a bare minimum configure your name (<tt>user.name</tt>) and email address (<tt>user.email</tt>).</p>
-      <pre class="prettyprint" data-lang="cli">
+      <pre>
 <b>$ git config --global user.name "Your Name"
 $ git config --global user.email you@example.com</b>
 $ git config --global color.ui auto
@@ -264,24 +275,16 @@ $ git config --global core.editor vim
   <slide>
     <hgroup>
       <h2>Basic usage</h2>
-      <h3>init, add, commit</h3>
+      <h3>Initializing a repository, adding files, and making a commit</h3>
     </hgroup>
-    <article class="smaller">
-      <pre class="prettyprint" data-lang="cli">
+    <article>
+      <pre>
 <b>$ git init</b>
 Initialized empty Git repository in /path/to/git-presentation/demo/.git/
 $ echo "Hi" &gt; README.txt
 <b>$ git add README.txt</b>
 $ git status
-# On branch master
-#
-# Initial commit
-#
-# Changes to be committed:
-#   (use "git rm --cached &lt;file&gt;..." to unstage)
-#
-#       new file:   README.txt
-#
+A  README.txt
 <b>$ git commit -m 'Initial commit'</b>
 [master (root-commit) dd9aafc] Initial commit
  1 file changed, 1 insertion(+)
@@ -295,15 +298,13 @@ dd9aafc Initial commit
   <slide>
     <hgroup>
       <h2>Basic usage</h2>
-      <h3>add, diff</h3>
+      <h3>Viewing local changes</h3>
     </hgroup>
-    <article class="smaller">
-      <pre class="prettyprint" data-lang="cli">
+    <article>
+      <pre>
 $ echo 'Hi there!' &gt; README.txt
 <b>$ git diff</b>
-diff --git a/README.txt b/README.txt
-index b14df64..137d409 100644
---- a/README.txt
+[...]
 +++ b/README.txt
 @@ -1 +1 @@
 -Hi
@@ -312,14 +313,9 @@ index b14df64..137d409 100644
 [master 48d6b45] Expand README.txt file
  1 file changed, 1 insertion(+), 1 deletion(-)
 $ echo 'Another file' &gt; another.txt &amp;&amp; echo 'Another line' &gt;&gt; README.txt
-$ git status
-# On branch master
-# Changes not staged for commit:
-#       modified:   README.txt
-#
-# Untracked files:
-#       another.txt
-no changes added to commit (use "git add" and/or "git commit -a")
+$ git status -s
+ M README.txt
+?? another.txt
 </pre>
     </article>
   </slide>
@@ -327,29 +323,23 @@ no changes added to commit (use "git add" and/or "git commit -a")
   <slide>
     <hgroup>
       <h2>Basic usage</h2>
-      <h3>diff and diff --cached</h3>
+      <h3>Local changes: staged vs. unstaged</h3>
     </hgroup>
-    <article class="smaller">
-      <pre class="prettyprint" data-lang="cli">
+    <article>
+      <pre>
 $ git add another.txt
 $ echo 'Hello world!' &gt; another.txt
-$ git status
-# Changes to be committed:
-#       new file:   another.txt
-#
-# Changes not staged for commit:
-#       modified:   README.txt
-#       modified:   another.txt
+$ git status -s
+ M README.txt
+AM another.txt
 <b>$ git diff another.txt</b>
---- a/another.txt
-+++ b/another.txt
+[...]
 @@ -1 +1 @@
 -Another file
 +Hello world!
 <b>$ git diff --cached another.txt</b>
 new file mode 100644
---- /dev/null
-+++ b/another.txt
+[...]
 @@ -0,0 +1 @@
 +Another file
 </pre>
@@ -359,10 +349,10 @@ new file mode 100644
   <slide>
     <hgroup>
       <h2>Basic usage</h2>
-      <h3>Amending commits</h3>
+      <h3>If you forgot something: amending commits</h3>
     </hgroup>
     <article class="smaller">
-      <pre class="prettyprint" data-lang="cli">
+      <pre>
 $ git add README.txt &amp;&amp; <b>git commit -m 'Further expand README and add another file'</b>
 [master e09c203] Further expand README and add another file
  2 files changed, 2 insertions(+)
@@ -370,13 +360,12 @@ $ git log --oneline
 <b>e09c203 Further expand README and add another file</b>
 48d6b45 Expand README.txt file
 dd9aafc Initial commit
-$ git status
-# Changes not staged for commit:
-#       modified:   another.txt
+$ git status -s
+ M another.txt
 $ git add another.txt &amp;&amp; <b>git commit -m 'Further expand README and add another file' --amend</b>
 [master da04a4e] Further expand README and add another file
  2 files changed, 2 insertions(+)
-$ git status
+$ git status -s
 nothing to commit (working directory clean)
 $ git log --oneline
 <b>da04a4e Further expand README and add another file</b>
@@ -389,10 +378,32 @@ dd9aafc Initial commit
   <slide>
     <hgroup>
       <h2>Basic usage</h2>
-      <h3>revert</h3>
+      <h3>Undoing uncommitted changes: checkout</h3>
     </hgroup>
-    <article class="smaller">
-      <pre class="prettyprint" data-lang="cli">
+    <article>
+      <pre>
+$ echo 123 &gt; README.txt &amp;&amp; rm another.txt
+$ git status -s
+ M README.txt
+ D another.txt
+$ cat README.txt 
+123
+$ cat another.txt
+cat: another.txt: No such file or directory
+$ git checkout README.txt another.txt
+$ git status
+nothing to commit, working directory clean
+</pre>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Basic usage</h2>
+      <h3>Undoing committed changes: revert</h3>
+    </hgroup>
+    <article>
+      <pre>
 <b>$ git revert HEAD</b>
 [master 7fd5c3b] Revert "Further expand README and add another file"
  2 files changed, 2 deletions(-)
@@ -407,7 +418,6 @@ README.txt
 $ cat README.txt 
 Hi there!
 $ git status
-# On branch master
 nothing to commit (working directory clean)
 </pre>
     </article>
@@ -416,46 +426,12 @@ nothing to commit (working directory clean)
   <slide>
     <hgroup>
       <h2>Basic usage</h2>
-      <h3>reset</h3>
+      <h3>Stashing changes away</h3>
     </hgroup>
-    <article class="smaller">
-      <pre class="prettyprint" data-lang="cli">
-<b>$ git reset HEAD~1</b>
-Unstaged changes after reset:
-M       README.txt
-D       another.txt
-$ git log --oneline
-da04a4e Further expand README and add another file
-48d6b45 Expand README.txt file
-dd9aafc Initial commit
-$ git status
-# Changes not staged for commit:
-#       modified:   README.txt
-#       deleted:    another.txt
-$ cat README.txt 
-Hi there!
-<b>$ git reset --hard</b>
-HEAD is now at da04a4e Further expand README and add another file
-$ git status
-nothing to commit (working directory clean)
-$ cat README.txt 
-Hi there!
-Another line
-</pre>
-    </article>
-  </slide>
-
-  <slide>
-    <hgroup>
-      <h2>Basic usage</h2>
-      <h3>stash</h3>
-    </hgroup>
-    <article class="smaller">
-      <pre class="prettyprint" data-lang="cli">
-$ echo 'Let me show you how to stash.' &gt;&gt; README.txt
-$ git status
-# Changes not staged for commit:
-#       modified:   README.txt
+    <article>
+      <pre>
+$ echo 'Let me show you how to stash.' &gt;&gt; README.txt &amp;&amp; git status -s
+ M README.txt
 <b>$ git stash</b>
 Saved working directory and index state WIP on master: da04a4e Further expand README and add another file
 HEAD is now at da04a4e Further expand README and add another file
@@ -464,13 +440,11 @@ stash@{0}: WIP on master: da04a4e Further expand README and add another file
 <b>$ git stash show stash@{0}</b>
  README.txt | 1 +
  1 file changed, 1 insertion(+)
-$ git status
-nothing to commit (working directory clean)
+$ git status -s
 <b>$ git stash pop</b>
 # Changes not staged for commit:
 #       modified:   README.txt
 Dropped refs/stash@{0} (d4e736551ff0a046bab784ad2efe777ea5c8b6db)
-$ git reset --hard
 </pre>
     </article>
   </slide>
@@ -478,10 +452,10 @@ $ git reset --hard
   <slide>
     <hgroup>
       <h2>Basic usage</h2>
-      <h3>branch</h3>
+      <h3>Killer feature: Simple branching (1)</h3>
     </hgroup>
-    <article class="smaller">
-      <pre class="prettyprint" data-lang="cli">
+    <article>
+      <pre>
 <b>$ git branch</b>
 * master
 <b>$ git checkout -b new_branch</b>
@@ -489,7 +463,7 @@ Switched to a new branch 'new_branch'
 $ git branch
   master
 * new_branch
-$ echo 'Hi from new_branch' &gt;&gt; another.txt 
+$ echo 'Hi from new_branch' &gt;&gt; another.txt
 <b>$ git commit -a -m 'Add branch message to another.txt'</b>
 [new_branch ae3eac3] Add branch message to another.txt
  1 file changed, 1 insertion(+)
@@ -504,10 +478,10 @@ Hello world!
   <slide>
     <hgroup>
       <h2>Basic usage</h2>
-      <h3>branch</h3>
+      <h3>Killer feature: Simple branching (2)</h3>
     </hgroup>
-    <article class="smaller">
-      <pre class="prettyprint" data-lang="cli">
+    <article>
+      <pre>
 $ git log --oneline master
 da04a4e Further expand README and add another file
 48d6b45 Expand README.txt file
@@ -521,13 +495,24 @@ dd9aafc Initial commit
     </article>
   </slide>
 
-  <slide>
+   <slide>
     <hgroup>
       <h2>Basic usage</h2>
-      <h3>merge</h3>
+      <h3>Killer feature: Simple branching (3)</h3>
     </hgroup>
-    <article class="smaller">
-      <pre class="prettyprint" data-lang="cli">
+    <article>
+      <div class="flexbox vcenter"><a href="images/rebase1.png"><img src="images/rebase1.png" alt="git-rebase"></a></div>
+      <footer class="source">Source: <a href="http://book.git-scm.com">Git Community Book</a> / License: <a href="https://raw.github.com/schacon/gitbook/master/COPYING">GPL2</a></footer>
+    </article>
+  </slide>
+
+ <slide>
+    <hgroup>
+      <h2>Basic usage</h2>
+      <h3>All together now: Merging branches (1)</h3>
+    </hgroup>
+    <article>
+      <pre>
 $ git status
 # On branch master
 nothing to commit (working directory clean)
@@ -536,14 +521,13 @@ Updating da04a4e..ae3eac3
 <b>Fast-forward</b>
  another.txt | 1 +
  1 file changed, 1 insertion(+)
-$ cat another.txt 
+$ cat another.txt
 Hello world!
 Hi from new_branch
 $ git log --oneline
 <b>ae3eac3 Add branch message to another.txt</b>
 da04a4e Further expand README and add another file
-48d6b45 Expand README.txt file
-dd9aafc Initial commit
+[...]
 </pre>
     </article>
   </slide>
@@ -551,19 +535,17 @@ dd9aafc Initial commit
   <slide>
     <hgroup>
       <h2>Basic usage</h2>
-      <h3>merge (2)</h3>
+      <h3>All together now: Merging branches (2)</h3>
     </hgroup>
-    <article class="smaller">
-      <pre class="prettyprint" data-lang="cli">
-$ git reset --hard HEAD~1
-HEAD is now at da04a4e Further expand README and add another file
+    <article>
+      <pre>
 <b>$ git merge --no-ff new_branch</b>
 Merge made by the 'recursive' strategy.
  another.txt | 1 +
  1 file changed, 1 insertion(+)
 $ git log --oneline
-<b>e37f4dd Merge branch 'new_branch'
-ae3eac3 Add branch message to another.txt</b>
+<b>e37f4dd Merge branch 'new_branch'</b>
+ae3eac3 Add branch message to another.txt
 da04a4e Further expand README and add another file
 48d6b45 Expand README.txt file
 dd9aafc Initial commit
@@ -576,7 +558,18 @@ Deleted branch new_branch (was ae3eac3).
   <slide>
     <hgroup>
       <h2>Basic usage</h2>
-      <h3>git-rebase</h3>
+      <h3>All together now: Merging branches (3)</h3>
+    </hgroup>
+    <article>
+      <div class="flexbox vcenter"><a href="images/rebase2.png"><img src="images/rebase2.png" alt="git-rebase"></a></div>
+      <footer class="source">Source: <a href="http://book.git-scm.com">Git Community Book</a> / License: <a href="https://raw.github.com/schacon/gitbook/master/COPYING">GPL2</a></footer>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Basic usage</h2>
+      <h3>Mild Danger Zone: Rebasing</h3>
     </hgroup>
     <article>
       <pre>
@@ -664,9 +657,10 @@ NAME
       <h3>git-rebase - A word of advice</h3>
     </hgroup>
     <article>
-      <ul class="build">
-      <li>Rebasing changes the repository's history! Beware problems when you push already published changes after a rebase.</li>
-      <li>Rebasing in your local branches is fine, though.</li>
+      <ul>
+        <li>Rebasing changes the repository's history! Beware problems when you push already published changes after a rebase.</li>
+        <li>Rebasing in your local branches is fine, though.</li>
+      <ul>
     </article>
   </slide>
 
@@ -675,8 +669,8 @@ NAME
       <h2>Basic usage</h2>
       <h3>git-rebase</h3>
     </hgroup>
-    <article class="smaller">
-      <pre class="prettyprint" data-lang="cli">
+    <article>
+      <pre>
 $ git checkout -b rebase_demo
 Switched to a new branch 'rebase_demo'
 $ touch my_branch
@@ -700,13 +694,13 @@ $ git add master &amp;&amp; git commit -m 'Add master demo file'
       <h2>Basic usage</h2>
       <h3>git-rebase (cont.)</h3>
     </hgroup>
-    <article class="smaller">
-      <pre class="prettyprint" data-lang="cli">
+    <article>
+      <pre>
 $ git checkout rebase_demo
 Switched to branch 'rebase_demo'
 $ git log --oneline | head -n1
 a81ebe5 Add my_branch demo file
-$ git rebase master
+<b>$ git rebase master</b>
 First, rewinding head to replay your work on top of it...
 Applying: Add my_branch demo file
 $ git log --oneline | head -n2
@@ -719,30 +713,24 @@ f05cbfe Add master demo file
   <slide>
     <hgroup>
       <h2>Basic usage</h2>
-      <h3>cherry-pick</h3>
+      <h3>Being a gourmet: cherry-pick your commits</h3>
     </hgroup>
-    <article class="smaller">
-      <pre class="prettyprint" data-lang="cli">
+    <article>
+      <pre>
 $ git branch -m rebase_demo cherry-pick_demo &amp;&amp; git branch
 * cherry-pick_demo
   master
-$ touch another_branch_file
-$ git add another_branch_file &amp;&amp; git commit -m 'Add another branch file'
-[cherry-pick_demo 505b117] Add another branch file
- 0 files changed
- create mode 100644 another_branch_file
-$ git checkout master
+$ touch another_branch_file &amp;&amp; git add another_branch_file &amp;&amp; git commit -m 'Add another branch file'
+$ git checkout master &amp;&amp; git log --oneline | head -n1
 Switched to branch 'master'
-$ git log --oneline | head -n1
 f05cbfe Add master demo file
 $ git log --oneline cherry-pick_demo | head -n1
-505b117 Add another branch file
-$ git cherry-pick 505b117
+<b>505b117 Add another branch file</b>
+<b>$ git cherry-pick 505b117</b>
 [master 0df0f3c] Add another branch file
- 0 files changed
  create mode 100644 another_branch_file
 $ git log --oneline | head -n2
-0df0f3c Add another branch file
+<b>0df0f3c Add another branch file</b>
 f05cbfe Add master demo file
 </pre>
     </article>
@@ -751,27 +739,25 @@ f05cbfe Add master demo file
   <slide>
     <hgroup>
       <h2>Basic usage</h2>
-      <h3>remote, clone</h3>
+      <h3>Attack of the clones: Remote work</h3>
     </hgroup>
     <article class="smaller">
-      <pre class="prettyprint" data-lang="cli">
-$ git clone . ../demo-clone &amp;&amp; cd ../demo-clone
-Cloning into '../demo-clone'...
+      <pre>
+$ git clone http://example.com/demo.git &amp;&amp; cd demo
+Cloning into 'demo'...
 done.
 $ git log --oneline | head -n1
 0df0f3c Add another branch file
 $ git branch -a
 * master
   remotes/origin/HEAD -&gt; origin/master
-  remotes/origin/cherry-pick_demo
   remotes/origin/master
 $ git remote show origin
 * remote origin
-  Fetch URL: /path/to/git-presentation/demo
-  Push  URL: /path/to/git-presentation/demo
+  Fetch URL: http://example.com/demo.git
+  Push  URL: http://example.com/demo.git
   HEAD branch: master
   Remote branches:
-    cherry-pick_demo tracked
     master           tracked
   Local branch configured for 'git pull':
     master merges with remote master
@@ -784,24 +770,23 @@ $ git remote show origin
   <slide>
     <hgroup>
       <h2>Basic usage</h2>
-      <h3>push</h3>
+      <h3>Now push it. Push it real good!</h3>
     </hgroup>
-    <article class="smaller">
-      <pre class="prettyprint" data-lang="cli">
-$ touch remote_add
-$ git add remote_add
+    <article>
+      <pre>
+$ touch remote_add &amp;&amp; git add remote_add
 $ git commit -m 'Add file in clone'
 [master dea3557] Add file in clone
  0 files changed
  create mode 100644 remote_add
-$ git push
+<b>$ git push</b>
 Counting objects: 3, done.
 Delta compression using up to 2 threads.
 Compressing objects: 100% (2/2), done.
 Writing objects: 100% (2/2), 269 bytes, done.
 Total 2 (delta 1), reused 0 (delta 0)
 Unpacking objects: 100% (2/2), done.
-To /path/to/git-presentation/demo/.
+To http://example.com/demo.git.
    0df0f3c..dea3557  master -&gt; master
 </pre>
     </article>
@@ -810,41 +795,18 @@ To /path/to/git-presentation/demo/.
   <slide>
     <hgroup>
       <h2>Basic usage</h2>
-      <h3>fetch (preparations)</h3>
+      <h3>Fetching latest commits from remote</h3>
     </hgroup>
-    <article class="smaller">
-      <pre class="prettyprint" data-lang="cli">
-$ cd ../demo
-$ touch local_add
-$ git add local_add
-$ git commit -m 'Add file on remote'
-$ touch local_add
-$ git add local_add &amp;&amp; git commit -m 'Add file on remote'
-[master ef5927f] Add file on remote
- 0 files changed
- create mode 100644 local_add
-$ git checkout cherry-pick_demo
-Switched to branch 'cherry-pick_demo'
-$ cd ../demo-clone
-</pre>
-    </article>
-  </slide>
-
-  <slide>
-    <hgroup>
-      <h2>Basic usage</h2>
-      <h3>fetch, merge</h3>
-    </hgroup>
-    <article class="smaller">
-      <pre class="prettyprint" data-lang="cli">
-$ git fetch
+    <article>
+      <pre>
+<b>$ git fetch</b>
 remote: Counting objects: 3, done.
 remote: Compressing objects: 100% (2/2), done.
 remote: Total 2 (delta 1), reused 0 (delta 0)
 Unpacking objects: 100% (2/2), done.
-From /path/to/git-presentation/demo/.
+From http://example.com/demo.git.
    dea3557..ef5927f  master     -&gt; origin/master
-$ git merge origin master
+<b>$ git merge origin master</b>
 Updating dea3557..ef5927f
 Fast-forward
  0 files changed
@@ -859,36 +821,18 @@ dea3557 Add file in clone
   <slide>
     <hgroup>
       <h2>Basic usage</h2>
-      <h3>reset, rebase</h3>
+      <h3>Saving keystrokes: pull changes</h3>
     </hgroup>
-    <article class="smaller">
-      <pre class="prettyprint" data-lang="cli">
-$ git reset --hard HEAD~1
-HEAD is now at dea3557 Add file in clone
-$ git rebase origin
-First, rewinding head to replay your work on top of it...
-Fast-forwarded master to origin.
-$ git log --oneline | head -n2
-ef5927f Add file on remote
-dea3557 Add file in clone
-</pre>
-    </article>
-  </slide>
-
-  <slide>
-    <hgroup>
-      <h2>Basic usage</h2>
-      <h3>pull</h3>
-    </hgroup>
-    <article class="smaller">
-      <pre class="prettyprint" data-lang="cli">
-$ git reset --hard HEAD~1
-HEAD is now at dea3557 Add file in clone
-$ git pull
-Updating dea3557..ef5927f
-Fast-forward
- 0 files changed
- create mode 100644 local_add
+    <article>
+      <pre>
+<b>$ git pull</b>
+remote: Counting objects: 3, done.
+remote: Compressing objects: 100% (2/2), done.
+remote: Total 2 (delta 1), reused 0 (delta 0)
+Unpacking objects: 100% (2/2), done.
+From http://example.com/demo.git.
+   dea3557..ef5927f  master     -&gt; origin/master
+Fast-forwarded master to ef5927f406344976dba1f6de18e7ccd7552c6940.
 $ git log --oneline | head -n2
 ef5927f Add file on remote
 dea3557 Add file in clone
@@ -922,7 +866,7 @@ dea3557 Add file in clone
     <article>
       <p>Useful abbreviations, new commands, or shortcuts in general</p>
       <p>Typical abbreviations:</p>
-        <pre class="prettyprint" data-lang="cli">
+        <pre>
 git config --global alias.st status
 git config --global alias.co checkout
 git config --global alias.ci commit
@@ -939,7 +883,7 @@ git config --global alias.br branch
     </hgroup>
     <article>
       <p>The process of creating a timestamped production tag can be automated with a simple script or a git alias like this one:</p>
-      <pre class="prettyprint" data-lang="cli">git config alias.datetag '!git tag $(date "+%Y%m%d%H%M")'</pre>
+      <pre>git config alias.datetag '!git tag $(date "+%Y%m%d%H%M")'</pre>
       <p>With this alias, <tt>git datetag</tt> will create a new tag from <tt>HEAD</tt> with the current timestamp.</p>
       <footer class="source">Source: <a href="http://reinh.com/blog/2009/03/02/a-git-workflow-for-agile-teams.html">A Git Workflow for Agile Teams</a></footer>
     </article>
@@ -952,7 +896,7 @@ git config --global alias.br branch
     </hgroup>
     <article>
       <div class="flexbox vcenter">The process of creating a timestamped production tag can be automated with a simple script or a git alias like this one:</div>
-      <pre class="prettyprint" data-lang="cli">git config --global alias.lg \
+      <pre>git config --global alias.lg \
   "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)
   %C(bold blue)&lt;%an&gt;%Creset' --abbrev-commit --date=relative"</pre>
       <p><img src="images/git-lg.png"></p>
@@ -970,7 +914,7 @@ git config --global alias.br branch
         <li>Tab completion for git commands, branches, SHA1 hashes&hellip;</li>
         <li>Usually installed with the git packages of your operating system</li>
       </ul>
-      <pre class="prettyprint" data-lang="cli"># Add to your ~/.bashrc
+      <pre># Add to your ~/.bashrc
 if [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
 fi
@@ -986,7 +930,7 @@ fi
     </hgroup>
     <article>
       <p>Show some information about the current git branch in your shell prompt</p>
-      <pre class="prettyprint" data-lang="cli">PS1='\[\033[01;32m\]\u@\h\[\033[01;34m\]
+      <pre>PS1='\[\033[01;32m\]\u@\h\[\033[01;34m\]
  \w\[\033[31m\]$(__git_ps1 " (%s)") \[\033[01;34m\]$\[\033[00m\] '</pre>
       <p><img src="images/bash-prompt.png" alt="Bash prompt demo"></p>
       <p class="fragment">Fancy prompt magic: <a href="http://volnitsky.com/project/git-prompt/">GIT Prompt</a></p>
@@ -1085,7 +1029,7 @@ fi
           <li>is concise and clear</li>
           <li>has a short description as its first line, followed by a blank line</li>
           <li>describes the changes and rationale, at a high level</li>
-          <li>mentions relevant tickets fixed or referenced by the included changes ("fixes #23, refs #42").</li>
+          <li>mentions relevant tickets fixed or referenced by the included changes ("fixes PROJ-123, refs FOO-23").</li>
           <li>mentions any caveats of the changes, unintended side effects, etc.</li>
           <li>can be just a single line if it can be both brief and complete</li>
         </ul>
@@ -1151,7 +1095,7 @@ Date:   Fri Mar 30 11:00:14 2012 +0200
     <article>
       <p>Output of <tt>git log --oneline</tt>
         <pre>012bfbf Upgrade to Gradle 1.0-rc-1, fixes #169
-633a288 Added handling of empty HTTP bodies
+633a288 Add handling of empty HTTP bodies
 </pre>
       </p>
     </article>
@@ -1182,7 +1126,7 @@ Date:   Fri Mar 30 11:00:14 2012 +0200
         <ul>
           <li>should not depend on other commits. Otherwise it makes cherry-picking hard.</li>
           <li>should be small, e. g. renaming a method (and its usages!) justifies its own commit</li>
-          <li>should be made often and not just before you go home</li>
+          <li>should be made often and <strong>NOT</strong> just once a day before you go home</li>
         </ul>
       </p>
       <p>Push your changes
