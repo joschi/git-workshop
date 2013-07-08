@@ -843,103 +843,6 @@ dea3557 Add file in clone
   <slide class="segue dark nobackground">
     <aside class="gdbar"><img src="images/gini_icon_128.png"></aside>
     <hgroup class="auto-fadein">
-      <h2>Git Tips and Tricks</h2>
-    </hgroup>
-  </slide>
-
-  <slide>
-    <hgroup>
-      <h2>Git Tips and Tricks</h2>
-      <h3>When something went wrong</h3>
-    </hgroup>
-    <article>
-      <div class="flexbox vcenter"><a href="images/git-pretty.png"><img src="images/git-pretty-tn.png"></a></div>
-      <footer class="source">Source: <a href="http://justinhileman.info/article/git-pretty/">Git pretty</a></footer>
-    </article>
-  </slide>
-
-  <slide>
-    <hgroup>
-      <h2>Git Tips and Tricks</h2>
-      <h3>Aliases</h3>
-    </hgroup>
-    <article>
-      <p>Useful abbreviations, new commands, or shortcuts in general</p>
-      <p>Typical abbreviations:</p>
-        <pre>
-git config --global alias.st status
-git config --global alias.co checkout
-git config --global alias.ci commit
-git config --global alias.br branch
-</pre>
-      <p><tt>git st</tt> will run <tt>git status</tt>, <tt>git co</tt> will run <tt>git checkout</tt> and so forth.</p>
-    </article>
-  </slide>
-
-  <slide>
-    <hgroup>
-      <h2>Git Tips and Tricks</h2>
-      <h3>Aliases</h3>
-    </hgroup>
-    <article>
-      <p>The process of creating a timestamped production tag can be automated with a simple script or a git alias like this one:</p>
-      <pre>git config alias.datetag '!git tag $(date "+%Y%m%d%H%M")'</pre>
-      <p>With this alias, <tt>git datetag</tt> will create a new tag from <tt>HEAD</tt> with the current timestamp.</p>
-      <footer class="source">Source: <a href="http://reinh.com/blog/2009/03/02/a-git-workflow-for-agile-teams.html">A Git Workflow for Agile Teams</a></footer>
-    </article>
-  </slide>
-
-  <slide>
-    <hgroup>
-      <h2>Git Tips and Tricks</h2>
-      <h3>Aliases</h3>
-    </hgroup>
-    <article>
-      <div class="flexbox vcenter">The process of creating a timestamped production tag can be automated with a simple script or a git alias like this one:</div>
-      <pre>git config --global alias.lg \
-  "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)
-  %C(bold blue)&lt;%an&gt;%Creset' --abbrev-commit --date=relative"</pre>
-      <p><img src="images/git-lg.png"></p>
-      <footer class="source">Source: <a href="http://www.jukie.net/bart/blog/pimping-out-git-log/">Pimping out git log</a></footer>
-    </article>
-  </slide>
-
-  <slide>
-    <hgroup>
-      <h2>Git Tips and Tricks</h2>
-      <h3>Bash Completion</h3>
-    </hgroup>
-    <article>
-      <ul>
-        <li>Tab completion for git commands, branches, SHA1 hashes&hellip;</li>
-        <li>Usually installed with the git packages of your operating system</li>
-      </ul>
-      <pre># Add to your ~/.bashrc
-if [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-fi
-</pre>
-      <footer class="source">Source: <a href="http://git-scm.com/book/en/Git-Basics-Tips-and-Tricks#Auto-Completion">Auto-Completion</a></footer>
-    </article>
-  </slide>
-
-  <slide>
-    <hgroup>
-      <h2>Git Tips and Tricks</h2>
-      <h3>Bash Completion</h3>
-    </hgroup>
-    <article>
-      <p>Show some information about the current git branch in your shell prompt</p>
-      <pre>PS1='\[\033[01;32m\]\u@\h\[\033[01;34m\]
- \w\[\033[31m\]$(__git_ps1 " (%s)") \[\033[01;34m\]$\[\033[00m\] '</pre>
-      <p><img src="images/bash-prompt.png" alt="Bash prompt demo"></p>
-      <p class="fragment">Fancy prompt magic: <a href="http://volnitsky.com/project/git-prompt/">GIT Prompt</a></p>
-    </article>
-  </slide>
-
-  <slide class="segue dark nobackground">
-    <aside class="gdbar"><img src="images/gini_icon_128.png"></aside>
-    <hgroup class="auto-fadein">
       <h2>Git Workflows</h2>
     </hgroup>
   </slide>
@@ -1011,6 +914,90 @@ fi
     </article>
   </slide>
 
+  <slide>
+    <hgroup>
+      <h2>Git Workflows</h2>
+      <h3>Integration with GitLab</h3>
+    </hgroup>
+    <article>
+      <ul>
+        <li><a href="http://gitlab.org/">GitLab</a> is a clone of <a href="https://github.com/">GitHub</a> for on-premise hosting of Git repositories</li>
+        <li>Good support for Feature Branch and Forking Workflow</li>
+        <li>Merge request as simple support for code review</li>
+      </ul>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Git Workflows</h2>
+      <h3>Integration with GitLab</h3>
+    </hgroup>
+    <article>
+      <a href="images/gitlab1.png"><img src="images/gitlab1.png"></a>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Git Workflows</h2>
+      <h3>Integration with GitLab</h3>
+    </hgroup>
+    <article>
+      <a href="images/gitlab2.png"><img src="images/gitlab2.png" width="600px"></a>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Git Workflows</h2>
+      <h3>Integration with GitLab</h3>
+    </hgroup>
+    <article>
+      <a href="images/gitlab3.png"><img src="images/gitlab3.png" height="400px"></a>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Git Workflows</h2>
+      <h3>Integration with GitLab</h3>
+    </hgroup>
+    <article>
+      <a href="images/gitlab4.png"><img src="images/gitlab4.png"></a>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Git Workflows</h2>
+      <h3>Integration with GitLab</h3>
+    </hgroup>
+    <article>
+      <a href="images/gitlab5.png"><img src="images/gitlab5.png"></a>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Git Workflows</h2>
+      <h3>Integration with GitLab</h3>
+    </hgroup>
+    <article>
+      <a href="images/gitlab6.png"><img src="images/gitlab6.png" width="600px"></a>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Git Workflows</h2>
+      <h3>Integration with GitLab</h3>
+    </hgroup>
+    <article>
+      <a href="images/gitlab7.png"><img src="images/gitlab7.png" width="600px"></a>
+    </article>
+  </slide>
+
   <slide class="segue dark nobackground">
     <aside class="gdbar"><img src="images/gini_icon_128.png"></aside>
     <hgroup class="auto-fadein">
@@ -1029,7 +1016,7 @@ fi
           <li>is concise and clear</li>
           <li>has a short description as its first line, followed by a blank line</li>
           <li>describes the changes and rationale, at a high level</li>
-          <li>mentions relevant tickets fixed or referenced by the included changes ("fixes PROJ-123, refs FOO-23").</li>
+          <li>mentions relevant tickets fixed or referenced by the included changes ("fixes #PROJ-123, refs #FOO-23").</li>
           <li>mentions any caveats of the changes, unintended side effects, etc.</li>
           <li>can be just a single line if it can be both brief and complete</li>
         </ul>
@@ -1136,6 +1123,103 @@ Date:   Fri Mar 30 11:00:14 2012 +0200
           <li>before you call it a day. Tests should be green in this case</li>
         </ul>
       </p>
+    </article>
+  </slide>
+
+  <slide class="segue dark nobackground">
+    <aside class="gdbar"><img src="images/gini_icon_128.png"></aside>
+    <hgroup class="auto-fadein">
+      <h2>Git Tips and Tricks</h2>
+    </hgroup>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Git Tips and Tricks</h2>
+      <h3>When something went wrong</h3>
+    </hgroup>
+    <article>
+      <div class="flexbox vcenter"><a href="images/git-pretty.png"><img src="images/git-pretty-tn.png"></a></div>
+      <footer class="source">Source: <a href="http://justinhileman.info/article/git-pretty/">Git pretty</a></footer>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Git Tips and Tricks</h2>
+      <h3>Aliases</h3>
+    </hgroup>
+    <article>
+      <p>Useful abbreviations, new commands, or shortcuts in general</p>
+      <p>Typical abbreviations:</p>
+        <pre>
+git config --global alias.st status
+git config --global alias.co checkout
+git config --global alias.ci commit
+git config --global alias.br branch
+</pre>
+      <p><tt>git st</tt> will run <tt>git status</tt>, <tt>git co</tt> will run <tt>git checkout</tt> and so forth.</p>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Git Tips and Tricks</h2>
+      <h3>Aliases</h3>
+    </hgroup>
+    <article>
+      <p>The process of creating a timestamped production tag can be automated with a simple script or a git alias like this one:</p>
+      <pre>git config alias.datetag '!git tag $(date "+%Y%m%d%H%M")'</pre>
+      <p>With this alias, <tt>git datetag</tt> will create a new tag from <tt>HEAD</tt> with the current timestamp.</p>
+      <footer class="source">Source: <a href="http://reinh.com/blog/2009/03/02/a-git-workflow-for-agile-teams.html">A Git Workflow for Agile Teams</a></footer>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Git Tips and Tricks</h2>
+      <h3>Aliases</h3>
+    </hgroup>
+    <article>
+      <div class="flexbox vcenter">The process of creating a timestamped production tag can be automated with a simple script or a git alias like this one:</div>
+      <pre>git config --global alias.lg \
+  "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)
+  %C(bold blue)&lt;%an&gt;%Creset' --abbrev-commit --date=relative"</pre>
+      <p><img src="images/git-lg.png"></p>
+      <footer class="source">Source: <a href="http://www.jukie.net/bart/blog/pimping-out-git-log/">Pimping out git log</a></footer>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Git Tips and Tricks</h2>
+      <h3>Bash Completion</h3>
+    </hgroup>
+    <article>
+      <ul>
+        <li>Tab completion for git commands, branches, SHA1 hashes&hellip;</li>
+        <li>Usually installed with the git packages of your operating system</li>
+      </ul>
+      <pre># Add to your ~/.bashrc
+if [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+fi
+</pre>
+      <footer class="source">Source: <a href="http://git-scm.com/book/en/Git-Basics-Tips-and-Tricks#Auto-Completion">Auto-Completion</a></footer>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Git Tips and Tricks</h2>
+      <h3>Bash Completion</h3>
+    </hgroup>
+    <article>
+      <p>Show some information about the current git branch in your shell prompt</p>
+      <pre>PS1='\[\033[01;32m\]\u@\h\[\033[01;34m\]
+ \w\[\033[31m\]$(__git_ps1 " (%s)") \[\033[01;34m\]$\[\033[00m\] '</pre>
+      <p><img src="images/bash-prompt.png" alt="Bash prompt demo"></p>
+      <p class="fragment">Fancy prompt magic: <a href="http://volnitsky.com/project/git-prompt/">GIT Prompt</a></p>
     </article>
   </slide>
 
